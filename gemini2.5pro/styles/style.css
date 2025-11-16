@@ -92,6 +92,72 @@ a:hover {
     text-decoration: underline;
 }
 
+/* === BREADCRUMB === */
+.breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    padding: var(--space-2) var(--space-4);
+    margin-bottom: var(--space-2);
+    list-style: none;
+    background-color: var(--color-background);
+    border-radius: var(--border-radius);
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    display: inline-block;
+    padding-right: var(--space-1);
+    padding-left: var(--space-1);
+    color: var(--color-secondary);
+    content: "/";
+}
+
+.breadcrumb-item.active {
+    color: var(--color-secondary);
+}
+
+/* === TOAST NOTIFICATION === */
+#toast-container {
+    position: fixed;
+    top: var(--space-2);
+    right: var(--space-2);
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.toast {
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    padding: var(--space-2);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--space-1);
+    box-shadow: var(--box-shadow);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    transform: translateX(100%);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast.success {
+    background-color: var(--color-success);
+}
+
+.toast.error {
+    background-color: var(--color-danger);
+}
+
+
+
 img {
     max-width: 100%;
     height: auto;
@@ -574,4 +640,85 @@ label {
     text-align: center;
     font-size: var(--font-size-sm);
     color: var(--color-secondary);
+}
+
+/* === CART PAGE === */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-3);
+    border-bottom: var(--border-width) solid var(--color-border);
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item-info {
+    display: flex;
+    align-items: center;
+}
+
+.cart-item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: var(--space-2);
+    border-radius: var(--border-radius);
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    margin-top: var(--space-1);
+}
+
+.quantity-selector label {
+    margin-right: var(--space-1);
+}
+
+.item-quantity {
+    width: 60px;
+}
+
+.btn-remove {
+    background: none;
+    border: none;
+    color: var(--color-danger);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.btn.disabled {
+    background-color: var(--color-secondary);
+    cursor: not-allowed;
+}
+
+.btn-undo {
+    background: none;
+    border: 1px solid var(--color-light);
+    color: var(--color-light);
+    margin-left: var(--space-2);
+    padding: var(--space-1);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.btn-undo:hover {
+    background-color: var(--color-light);
+    color: var(--color-dark);
+}
+
+/* === CHECKOUT FORM === */
+.form-group .error-message {
+    color: var(--color-danger);
+    font-size: var(--font-size-sm);
+    margin-top: var(--space-1);
+}
+
+.form-group input.invalid {
+    border-color: var(--color-danger);
 }
