@@ -1,0 +1,24 @@
+# robots.txt for ShopHub E-commerce Website
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow crawling of shopping cart and checkout pages (user-specific content)
+Disallow: /cart.html
+Disallow: /checkout.html
+
+# Disallow scripts and styles directories (no need to index these)
+Disallow: /scripts/
+Disallow: /styles/
+
+# Allow crawling of product pages and images
+Allow: /product.html
+Allow: /products.html
+Allow: /images/
+
+# Crawl delay (optional - adjust based on server capacity)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://www.shophub.com/sitemap.xml

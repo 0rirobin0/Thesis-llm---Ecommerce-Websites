@@ -827,6 +827,92 @@ const initProductPage = () => {
         addToCart(product.id, quantity);
         buttonSuccess(addBtn);
     });
+
+    // Add JSON-LD structured data for SEO
+    addProductStructuredData(product);
+};
+
+/**
+ * Add JSON-LD structured data for product SEO
+ */
+const addProductStructuredData = (product) => {
+    // Remove any existing product structured data
+    const existingScript = document.querySelector('script[type="application/ld+json"]');
+    if (existingScript) {
+        existingScript.remove();
+    }
+
+    // Create JSON-LD structured data
+    const structuredData = {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": product.name,
+        "image": product.image,
+        "description": product.description,
+        "sku": `SHOP-${product.id.toString().padStart(6, '0')}`,
+        "brand": {
+            "@type": "Brand",
+            "name": "ShopHub"
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": `https://www.shophub.com/product.html?id=${product.id}`,
+            "priceCurrency": "USD",
+            "price": product.price.toFixed(2),
+            "availability": "https://schema.org/InStock",
+            "seller": {
+                "@type": "Organization",
+                "name": "ShopHub"
+            }
+        },
+        "category": product.category
+    };
+
+    // Add aggregate rating if available (placeholder for future enhancement)
+    if (product.rating) {
+        structuredData.aggregateRating = {
+            "@type": "AggregateRating",
+            "ratingValue": product.rating,
+            "reviewCount": product.reviewCount || 0
+        };
+    }
+
+    // Create script element and inject into head
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
+
+    // Update page title and meta description dynamically
+    document.title = `${product.name} - ShopHub`;
+    
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+        metaDescription.setAttribute('content', `${product.description} Price: $${product.price.toFixed(2)}. Shop now at ShopHub with fast shipping.`);
+    }
+
+    // Update Open Graph tags dynamically
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', `${product.name} - ShopHub`);
+
+    const ogDescription = document.querySelector('meta[property="og:description"]');
+    if (ogDescription) ogDescription.setAttribute('content', product.description);
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) ogImage.setAttribute('content', product.image);
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.setAttribute('content', `https://www.shophub.com/product.html?id=${product.id}`);
+
+    // Update Twitter Card tags dynamically
+    const twitterTitle = document.querySelector('meta[property="twitter:title"]');
+    if (twitterTitle) twitterTitle.setAttribute('content', `${product.name} - ShopHub`);
+
+    const twitterDescription = document.querySelector('meta[property="twitter:description"]');
+    if (twitterDescription) twitterDescription.setAttribute('content', product.description);
+
+    const twitterImage = document.querySelector('meta[property="twitter:image"]');
+    if (twitterImage) twitterImage.setAttribute('content', product.image);
 };
 
 /**
