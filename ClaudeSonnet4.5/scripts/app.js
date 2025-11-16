@@ -202,12 +202,69 @@ const updateCartQuantity = (productId, quantity) => {
 };
 
 /**
- * Remove item from cart
+ * Remove item from cart with undo functionality
  */
-const removeFromCart = (productId) => {
+let lastRemovedItem = null;
+let undoTimeout = null;
+
+const removeFromCart = (productId, showUndo = true) => {
     let cart = getCart();
+    const removedItem = cart.find(item => item.id === productId);
     cart = cart.filter(item => item.id !== productId);
     saveCart(cart);
+    
+    // Show undo notification
+    if (showUndo && removedItem) {
+        lastRemovedItem = removedItem;
+        showUndoNotification(removedItem.name);
+    }
+};
+
+/**
+ * Show undo notification for cart removal
+ */
+const showUndoNotification = (productName) => {
+    const undoNotification = document.getElementById('undoNotification');
+    if (!undoNotification) return;
+    
+    const message = undoNotification.querySelector('.undo-message');
+    message.textContent = `${productName} removed from cart`;
+    
+    undoNotification.style.display = 'flex';
+    
+    // Clear existing timeout
+    if (undoTimeout) clearTimeout(undoTimeout);
+    
+    // Auto-hide after 5 seconds
+    undoTimeout = setTimeout(() => {
+        undoNotification.style.display = 'none';
+        lastRemovedItem = null;
+    }, 5000);
+};
+
+/**
+ * Undo cart item removal
+ */
+const undoRemoval = () => {
+    if (lastRemovedItem) {
+        const cart = getCart();
+        cart.push(lastRemovedItem);
+        saveCart(cart);
+        
+        // Hide notification
+        const undoNotification = document.getElementById('undoNotification');
+        if (undoNotification) undoNotification.style.display = 'none';
+        
+        // Refresh cart display
+        if (typeof renderCartItems === 'function') {
+            renderCartItems();
+        }
+        
+        showNotification(`${lastRemovedItem.name} restored to cart`, 2000, 'success');
+        lastRemovedItem = null;
+        
+        if (undoTimeout) clearTimeout(undoTimeout);
+    }
 };
 
 /**
@@ -561,6 +618,22 @@ const initProductsPage = () => {
     }
 
     /**
+     * Update search status message
+     */
+    const updateSearchStatus = (count, isSearching) => {
+        const searchStatus = document.getElementById('searchStatus');
+        if (searchStatus) {
+            if (isSearching) {
+                searchStatus.textContent = 'Searching...';
+                searchStatus.className = 'search-status loading';
+            } else {
+                searchStatus.textContent = `${count} ${count === 1 ? 'product' : 'products'} found`;
+                searchStatus.className = 'search-status';
+            }
+        }
+    };
+
+    /**
      * Filter and display products
      */
     const displayProducts = () => {
@@ -571,6 +644,7 @@ const initProductsPage = () => {
         // Set loading state
         container.setAttribute('aria-busy', 'true');
         showLoading(container.parentElement);
+        updateSearchStatus(0, true);
 
         // Simulate processing time for better UX feedback
         setTimeout(() => {
@@ -598,8 +672,9 @@ const initProductsPage = () => {
                     break;
             }
 
-            // Update results count
+            // Update results count and status
             document.getElementById('productCount').textContent = filteredProducts.length;
+            updateSearchStatus(filteredProducts.length, false);
 
             // Display products or show no results
             if (filteredProducts.length === 0) {
@@ -940,6 +1015,12 @@ const initCartPage = () => {
         summary.style.display = 'block';
         emptyCart.style.display = 'none';
 
+        // Setup undo button listener
+        const undoBtn = document.getElementById('undoBtn');
+        if (undoBtn) {
+            undoBtn.addEventListener('click', undoRemoval);
+        }
+
         // Clear container
         container.innerHTML = '';
 
@@ -1114,6 +1195,23 @@ const initCheckoutPage = () => {
     if (!form) return;
 
     const cart = getCart();
+
+    // Real-time email validation
+    const emailInput = document.getElementById('email');
+    const emailSuccess = document.getElementById('emailSuccess');
+    if (emailInput && emailSuccess) {
+        emailInput.addEventListener('input', () => {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(emailInput.value)) {
+                emailSuccess.style.display = 'inline';
+                emailInput.classList.remove('error');
+                emailInput.classList.add('success');
+            } else {
+                emailSuccess.style.display = 'none';
+                emailInput.classList.remove('success');
+            }
+        });
+    }
 
     // Check if cart is empty
     if (cart.length === 0) {

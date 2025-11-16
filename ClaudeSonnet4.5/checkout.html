@@ -53,6 +53,24 @@
     <main id="main-content" class="checkout-page">
         <div class="container">
             <h1 class="page-title">Checkout</h1>
+            
+            <!-- Progress indicator -->
+            <div class="checkout-progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" aria-label="Checkout progress">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Information</div>
+                </div>
+                <div class="progress-connector"></div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Review</div>
+                </div>
+                <div class="progress-connector"></div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Complete</div>
+                </div>
+            </div>
 
             <div class="checkout-content">
                 <!-- Checkout form section -->
@@ -72,10 +90,11 @@
                                     class="form-input"
                                     required
                                     aria-required="true"
-                                    aria-describedby="fullNameError"
+                                    aria-describedby="fullNameError fullNameHelp"
                                     autocomplete="name"
                                     aria-invalid="false"
                                 >
+                                <span id="fullNameHelp" class="field-hint">Enter your first and last name</span>
                                 <span id="fullNameError" class="error-message" role="alert" aria-live="polite"></span>
                             </div>
 
@@ -90,11 +109,13 @@
                                     class="form-input"
                                     required
                                     aria-required="true"
-                                    aria-describedby="emailError"
+                                    aria-describedby="emailError emailHelp"
                                     autocomplete="email"
                                     aria-invalid="false"
                                 >
+                                <span id="emailHelp" class="field-hint">We'll send your order confirmation here</span>
                                 <span id="emailError" class="error-message" role="alert" aria-live="polite"></span>
+                                <span id="emailSuccess" class="success-message" style="display: none;">✓ Valid email</span>
                             </div>
 
                             <div class="form-group">

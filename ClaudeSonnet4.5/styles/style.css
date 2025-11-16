@@ -2121,6 +2121,264 @@ textarea:focus-visible {
 }
 
 /* ===========================
+   UX IMPROVEMENTS
+   =========================== */
+
+/* Search Status Indicator */
+.search-status {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-top: var(--spacing-2);
+    min-height: 20px;
+    font-weight: var(--font-weight-medium);
+}
+
+.search-status.loading {
+    color: var(--color-primary);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Undo Notification */
+.undo-notification {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-secondary-800);
+    color: white;
+    padding: var(--spacing-4);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-6);
+    box-shadow: var(--shadow-lg);
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.undo-message {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+}
+
+.btn-undo {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--border-radius);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: var(--font-size-sm);
+}
+
+.btn-undo:hover {
+    background: var(--color-primary-700);
+    transform: translateY(-1px);
+}
+
+.btn-undo:active {
+    transform: translateY(0);
+}
+
+/* Checkout Progress Indicator */
+.checkout-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: var(--spacing-8) 0;
+    padding: var(--spacing-6);
+    background: var(--color-bg-secondary);
+    border-radius: var(--border-radius);
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+    position: relative;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-full);
+    background: var(--color-secondary-300);
+    color: var(--color-secondary-600);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--font-size-lg);
+    transition: var(--transition);
+}
+
+.progress-step.active .step-number {
+    background: var(--color-primary);
+    color: white;
+    box-shadow: 0 0 0 4px var(--color-primary-100);
+}
+
+.progress-step.completed .step-number {
+    background: var(--color-success);
+    color: white;
+}
+
+.progress-step.completed .step-number::before {
+    content: "✓";
+}
+
+.step-label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+}
+
+.progress-step.active .step-label {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.progress-connector {
+    width: 80px;
+    height: 2px;
+    background: var(--color-secondary-300);
+    margin: 0 var(--spacing-2);
+    position: relative;
+    top: -18px;
+}
+
+@media (max-width: 768px) {
+    .checkout-progress {
+        padding: var(--spacing-4);
+    }
+    
+    .progress-connector {
+        width: 40px;
+    }
+    
+    .step-label {
+        font-size: var(--font-size-xs);
+    }
+    
+    .step-number {
+        width: 36px;
+        height: 36px;
+        font-size: var(--font-size-base);
+    }
+}
+
+/* Form Field Hints */
+.field-hint {
+    display: block;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    margin-top: var(--spacing-1);
+    font-style: italic;
+}
+
+.success-message {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--color-success);
+    margin-top: var(--spacing-1);
+    font-weight: var(--font-weight-medium);
+}
+
+.form-input.success {
+    border-color: var(--color-success);
+}
+
+.form-input.success:focus {
+    outline-color: var(--color-success);
+    box-shadow: 0 0 0 3px var(--color-success-light);
+}
+
+/* Enhanced Quantity Controls */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border: 2px solid var(--color-border);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: white;
+}
+
+.quantity-btn {
+    min-width: 44px;
+    min-height: 44px;
+    background: var(--color-bg-secondary);
+    border: none;
+    cursor: pointer;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-btn:hover {
+    background: var(--color-primary-50);
+}
+
+.quantity-btn:active {
+    background: var(--color-primary-100);
+    transform: scale(0.95);
+}
+
+.quantity-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--color-secondary-100);
+}
+
+.quantity-input {
+    width: 60px;
+    border: none;
+    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
+    text-align: center;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    padding: var(--spacing-2);
+    background: white;
+}
+
+.quantity-input:focus {
+    outline: none;
+    background: var(--color-primary-50);
+}
+
+/* Remove spinner buttons from number input */
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quantity-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* ===========================
    FOOTER
    =========================== */
 .footer {
