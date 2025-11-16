@@ -273,6 +273,36 @@ label {
     font-weight: var(--font-weight-bold);
 }
 
+/* === HERO SECTION === */
+.hero {
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    padding: var(--space-5) 0;
+    text-align: center;
+    margin-bottom: var(--space-4);
+}
+
+.hero-content h1 {
+    font-size: 3rem;
+    margin-bottom: var(--space-2);
+    font-weight: var(--font-weight-light);
+}
+
+.hero-content p {
+    font-size: var(--font-size-lg);
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: var(--space-3);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* === FEATURED PRODUCTS === */
+.featured-products {
+    padding-bottom: var(--space-4);
+    text-align: center;
+}
+
 /* === PRODUCT GRID === */
 #product-list {
     display: grid;
