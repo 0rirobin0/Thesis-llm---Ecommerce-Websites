@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Your shopping cart">
+    <title>Shopping Cart - ShopHub</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./styles/style.css" as="style">
+    <link rel="preload" href="./scripts/app.js" as="script" crossorigin>
+    <link rel="preload" href="./scripts/products.js" as="script" crossorigin>
+    
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="Main navigation">
+                <a href="./index.html" class="logo" aria-label="ShopHub home">
+                    <span class="logo-text">ShopHub</span>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="./index.html" class="nav-link">Home</a>
+                    <a href="./products.html" class="nav-link">Products</a>
+                    <a href="./cart.html" class="nav-link cart-link active" aria-current="page" aria-label="Shopping cart">
+                        <span>Cart</span>
+                        <span class="cart-badge" id="cartBadge" role="status" aria-live="polite" aria-atomic="true">
+                            <span class="sr-only">items in cart: </span>0
+                        </span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" class="cart-page">
+        <div class="container">
+            <h1 class="page-title">Shopping Cart</h1>
+
+            <div class="cart-content">
+                <!-- Cart items section -->
+                <div class="cart-items-section">
+                    <div id="cartItemsContainer" class="cart-items" role="list">
+                        <!-- Cart items loaded via JavaScript -->
+                    </div>
+
+                    <div id="emptyCart" class="empty-cart" style="display: none;" role="status">
+                        <div class="empty-cart-icon" aria-hidden="true">🛒</div>
+                        <h2>Your cart is empty</h2>
+                        <p>Add some products to get started!</p>
+                        <a href="./products.html" class="btn btn-primary">Start Shopping</a>
+                    </div>
+                </div>
+
+                <!-- Cart summary section -->
+                <aside class="cart-summary" id="cartSummary" aria-labelledby="summary-heading" role="complementary">
+                    <h2 id="summary-heading" class="summary-title">Order Summary</h2>
+                    
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal" class="summary-value" role="status" aria-live="polite" aria-atomic="true">$0.00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span id="shipping" class="summary-value" role="status" aria-live="polite" aria-atomic="true">$0.00</span>
+                    </div>
+                    
+                    <div class="summary-row">
+                        <span>Tax (10%):</span>
+                        <span id="tax" class="summary-value" role="status" aria-live="polite" aria-atomic="true">$0.00</span>
+                    </div>
+                    
+                    <div class="summary-divider"></div>
+                    
+                    <div class="summary-row summary-total">
+                        <span>Total:</span>
+                        <span id="total" class="summary-value" role="status" aria-live="polite" aria-atomic="true">$0.00</span>
+                    </div>
+
+                    <a href="./checkout.html" id="checkoutBtn" class="btn btn-primary btn-block">
+                        Proceed to Checkout
+                    </a>
+                    
+                    <a href="./products.html" class="btn btn-secondary btn-block">
+                        Continue Shopping
+                    </a>
+                </aside>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">ShopHub</h3>
+                    <p class="footer-text">Your trusted online shopping destination</p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./products.html">Products</a></li>
+                        <li><a href="./cart.html">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Contact</h3>
+                    <p class="footer-text">Email: support@shophub.com</p>
+                    <p class="footer-text">Phone: 1-800-SHOP-HUB</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ShopHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="./scripts/app.js" defer></script>
+</body>
+</html>

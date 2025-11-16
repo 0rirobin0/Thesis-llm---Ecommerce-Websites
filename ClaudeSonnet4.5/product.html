@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Product details">
+    <title>Product Details - ShopHub</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./styles/style.css" as="style">
+    <link rel="preload" href="./scripts/app.js" as="script" crossorigin>
+    <link rel="preload" href="./scripts/products.js" as="script" crossorigin>
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="Main navigation">
+                <a href="./index.html" class="logo" aria-label="ShopHub home">
+                    <span class="logo-text">ShopHub</span>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="./index.html" class="nav-link">Home</a>
+                    <a href="./products.html" class="nav-link">Products</a>
+                    <a href="./cart.html" class="nav-link cart-link" aria-label="Shopping cart">
+                        <span>Cart</span>
+                        <span class="cart-badge" id="cartBadge" role="status" aria-live="polite" aria-atomic="true">
+                            <span class="sr-only">items in cart: </span>0
+                        </span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" class="product-detail-page">
+        <div class="container">
+            <nav aria-label="Breadcrumb" class="breadcrumb">
+                <a href="./index.html">Home</a>
+                <span aria-hidden="true"> / </span>
+                <a href="./products.html">Products</a>
+                <span aria-hidden="true"> / </span>
+                <span id="breadcrumbProduct" aria-current="page">Product</span>
+            </nav>
+
+            <div id="productDetailContainer" class="product-detail">
+                <!-- Product details loaded via JavaScript -->
+            </div>
+
+            <div id="productNotFound" class="not-found" style="display: none;" role="status">
+                <h1>Product Not Found</h1>
+                <p>Sorry, we couldn't find the product you're looking for.</p>
+                <a href="./products.html" class="btn btn-primary">Browse All Products</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">ShopHub</h3>
+                    <p class="footer-text">Your trusted online shopping destination</p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./products.html">Products</a></li>
+                        <li><a href="./cart.html">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Contact</h3>
+                    <p class="footer-text">Email: support@shophub.com</p>
+                    <p class="footer-text">Phone: 1-800-SHOP-HUB</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ShopHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="./scripts/app.js" defer></script>
+</body>
+</html>

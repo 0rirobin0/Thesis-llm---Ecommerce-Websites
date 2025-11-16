@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse our complete collection of products">
+    <title>Products - ShopHub</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./styles/style.css" as="style">
+    <link rel="preload" href="./scripts/app.js" as="script" crossorigin>
+    <link rel="preload" href="./scripts/products.js" as="script" crossorigin>
+    
+    <!-- DNS prefetch for external resources -->
+    <link rel="dns-prefetch" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header class="header">
+        <div class="container">
+            <nav class="navbar" role="navigation" aria-label="Main navigation">
+                <a href="./index.html" class="logo" aria-label="ShopHub home">
+                    <span class="logo-text">ShopHub</span>
+                </a>
+                
+                <div class="nav-links">
+                    <a href="./index.html" class="nav-link">Home</a>
+                    <a href="./products.html" class="nav-link active" aria-current="page">Products</a>
+                    <a href="./cart.html" class="nav-link cart-link" aria-label="Shopping cart">
+                        <span>Cart</span>
+                        <span class="cart-badge" id="cartBadge" role="status" aria-live="polite" aria-atomic="true">
+                            <span class="sr-only">items in cart: </span>0
+                        </span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" class="products-page">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Our Products</h1>
+                <p class="page-subtitle">Discover our full collection</p>
+            </div>
+
+            <!-- Filters and search section -->
+            <div class="filters-section" role="search" aria-label="Product filters">
+                <div class="search-box">
+                    <label for="searchInput" class="sr-only">Search products</label>
+                    <input 
+                        type="search" 
+                        id="searchInput" 
+                        class="search-input" 
+                        placeholder="Search products..."
+                        aria-label="Search products"
+                        autocomplete="off"
+                        aria-controls="productsContainer"
+                    >
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <label for="categoryFilter" class="filter-label">Category:</label>
+                        <select id="categoryFilter" class="filter-select" aria-label="Filter by category" aria-controls="productsContainer">
+                            <option value="all">All Categories</option>
+                            <option value="shoes">Shoes</option>
+                            <option value="apparel">Apparel</option>
+                            <option value="electronics">Electronics</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="sortFilter" class="filter-label">Sort by:</label>
+                        <select id="sortFilter" class="filter-select" aria-label="Sort products" aria-controls="productsContainer">
+                            <option value="default">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="name">Name: A to Z</option>
+                        </select>
+                    </div>
+
+                    <button id="clearFilters" class="btn btn-text" aria-label="Clear all filters">
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+
+            <!-- Products results -->
+            <div class="products-results">
+                <div class="results-header">
+                    <p id="resultsCount" class="results-count" role="status" aria-live="polite" aria-atomic="true">
+                        Showing <span id="productCount">0</span> products
+                    </p>
+                </div>
+
+                <div class="product-grid" id="productsContainer" role="list" aria-live="polite" aria-busy="false">
+                    <!-- Products loaded via JavaScript -->
+                </div>
+
+                <div id="noResults" class="no-results" style="display: none;" role="status">
+                    <p>No products found matching your criteria.</p>
+                    <button id="resetFilters" class="btn btn-secondary">Reset Filters</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">ShopHub</h3>
+                    <p class="footer-text">Your trusted online shopping destination</p>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="./index.html">Home</a></li>
+                        <li><a href="./products.html">Products</a></li>
+                        <li><a href="./cart.html">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3 class="footer-title">Contact</h3>
+                    <p class="footer-text">Email: support@shophub.com</p>
+                    <p class="footer-text">Phone: 1-800-SHOP-HUB</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 ShopHub. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="./scripts/app.js" defer></script>
+</body>
+</html>
