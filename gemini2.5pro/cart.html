@@ -1,100 +1,71 @@
+<!-- /cart.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Shopping Cart - ShopSphere</title>
-    <meta name="description" content="Review the items in your shopping cart and proceed to checkout.">
-    <meta name="robots" content="noindex, nofollow"> <!-- Discourage search engines from indexing cart pages -->
+    <title>Your Shopping Cart - E-Commerce</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <meta name="description" content="Review, update, or remove items from your shopping cart before proceeding to checkout.">
+    <meta name="robots" content="noindex, nofollow">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.yourdomain.com/cart.html">
-    <meta property="og:title" content="Your Shopping Cart - ShopSphere">
-    <meta property="og:description" content="Review the items in your shopping cart and proceed to checkout.">
-    <meta property="og:image" content="https://www.yourdomain.com/images/og-cart.jpg">
+    <meta property="og:url" content="https://example.com/cart.html">
+    <meta property="og:title" content="Your Shopping Cart - E-Commerce">
+    <meta property="og:description" content="Review, update, or remove items from your shopping cart before proceeding to checkout.">
+    <meta property="og:image" content="https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.yourdomain.com/cart.html">
-    <meta property="twitter:title" content="Your Shopping Cart - ShopSphere">
-    <meta property="twitter:description" content="Review the items in your shopping cart and proceed to checkout.">
-    <meta property="twitter:image" content="https://www.yourdomain.com/images/og-cart.jpg">
-
-    <link rel="stylesheet" href="styles/style.css">
+    <meta property="twitter:url" content="https://example.com/cart.html">
+    <meta property="twitter:title" content="Your Shopping Cart - E-Commerce">
+    <meta property="twitter:description" content="Review, update, or remove items from your shopping cart before proceeding to checkout.">
+    <meta property="twitter:image" content="https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div id="toast-container"></div>
-    <header>
-        <nav class="container">
-            <a href="index.html" class="logo">ShopSphere</a>
-            <ul>
-                <li><a href="products.html">Products</a></li>
-                <li><a href="cart.html" aria-current="page">Cart <span class="cart-count">0</span></a></li>
-                <li><a href="checkout.html">Checkout</a></li>
-            </ul>
-        </nav>
-    </header>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Cart</li>
-        </ol>
-    </nav>
-    <main id="main-content">
-        <h1>Shopping Cart</h1>
-        <div id="cart-items" aria-live="polite">
-            <!-- Cart items will be injected here by JavaScript -->
-        </div>
-        <div id="cart-total">
-            <!-- Cart total will be injected here by JavaScript -->
-        </div>
-        <a href="checkout.html" class="btn">Proceed to Checkout</a>
-    </main>
-    <footer class="site-footer">
+
+    <header class="main-header">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h4>Navigate</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="#">Our Story</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping & Returns</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Social</h4>
-                    <ul>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                    </ul>
-                </div>
+            <a href="index.html" class="logo">ShopZen</a>
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html" class="cart-icon" aria-label="View Shopping Cart">
+                        Cart
+                        <span id="cart-count" aria-live="polite">0</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" class="container">
+        <div class="cart-container">
+            <h1>Your Shopping Cart</h1>
+            <div id="cart-items-container">
+                <!-- Cart items will be injected by JavaScript -->
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 ShopSphere. All Rights Reserved.</p>
+            <div id="cart-summary" class="cart-summary" style="display: none;">
+                <h2>Total: <span id="cart-total">$0.00</span></h2>
+                <a href="checkout.html" class="btn">Proceed to Checkout</a>
             </div>
+            <div id="empty-cart-message">
+                <p>Your cart is empty.</p>
+                <a href="products.html" class="btn">Continue Shopping</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 ShopZen. All Rights Reserved.</p>
         </div>
     </footer>
-    <script src="scripts/products.js" defer></script>
-    <script src="scripts/app.js" defer></script>
+
+    <script src="scripts/products.js"></script>
+    <script src="scripts/app.js"></script>
 </body>
 </html>

@@ -1,118 +1,102 @@
+<!-- /checkout.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout - ShopSphere</title>
-    <meta name="description" content="Complete your purchase securely at ShopSphere.">
-    <meta name="robots" content="noindex, nofollow"> <!-- Discourage search engines from indexing checkout pages -->
+    <title>Secure Checkout - TechNova</title>
+    <meta name="description" content="Complete your purchase securely at TechNova. Enter your shipping and payment details to finalize your order.">
+    <meta name="robots" content="noindex, nofollow"> <!-- Prevents search engines from indexing checkout pages -->
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.yourdomain.com/checkout.html">
-    <meta property="og:title" content="Checkout - ShopSphere">
-    <meta property="og:description" content="Complete your purchase securely at ShopSphere.">
-    <meta property="og:image" content="https://www.yourdomain.com/images/og-checkout.jpg">
+    <meta property="og:url" content="https://example.com/checkout.html">
+    <meta property="og:title" content="Secure Checkout - TechNova">
+    <meta property="og:description" content="Complete your purchase securely at TechNova. Enter your shipping and payment details to finalize your order.">
+    <meta property="og:image" content="https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.yourdomain.com/checkout.html">
-    <meta property="twitter:title" content="Checkout - ShopSphere">
-    <meta property="twitter:description" content="Complete your purchase securely at ShopSphere.">
-    <meta property="twitter:image" content="https://www.yourdomain.com/images/og-checkout.jpg">
-
-    <link rel="stylesheet" href="styles/style.css">
+    <meta property="twitter:url" content="https://example.com/checkout.html">
+    <meta property="twitter:title" content="Secure Checkout - TechNova">
+    <meta property="twitter:description" content="Complete your purchase securely at TechNova. Enter your shipping and payment details to finalize your order.">
+    <meta property="twitter:image" content="https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div id="toast-container"></div>
-    <header>
-        <nav>
-            <a href="index.html" class="logo">ShopSphere</a>
-            <ul>
-                <li><a href="products.html">Products</a></li>
-                <li><a href="cart.html">Cart <span class="cart-count">0</span></a></li>
-                <li><a href="checkout.html" aria-current="page">Checkout</a></li>
-            </ul>
-        </nav>
-    </header>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item"><a href="cart.html">Cart</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Checkout</li>
-        </ol>
-    </nav>
-    <main id="main-content">
-        <h1>Checkout</h1>
-        <div id="order-summary">
-            <!-- Order summary will be injected here by JavaScript -->
-        </div>
-        <form id="checkout-form" novalidate>
-            <h2>Contact Information</h2>
-            <div class="form-group">
-                <label for="name">Full Name</label>
-                <input type="text" id="name" name="name" required autocomplete="name">
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required autocomplete="email">
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone</label>
-                <input type="tel" id="phone" name="phone" required autocomplete="tel">
-            </div>
-            <h2>Shipping Address</h2>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" required autocomplete="street-address">
-            </div>
-            <button type="submit" class="btn">Place Order</button>
-        </form>
-    </main>
-    <footer class="site-footer">
+
+    <header class="main-header">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h4>Navigate</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="#">Our Story</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping & Returns</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Social</h4>
-                    <ul>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                    </ul>
+            <a href="index.html" class="logo">ShopZen</a>
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html" class="cart-icon" aria-label="View Shopping Cart">
+                        Cart
+                        <span id="cart-count" aria-live="polite">0</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" class="container">
+        <div id="checkout-view">
+            <div class="checkout-container">
+                <h1>Checkout</h1>
+                <div class="checkout-grid">
+                    <section class="checkout-form" aria-labelledby="checkout-heading">
+                        <h2 id="checkout-heading" class="visually-hidden">Shipping Information</h2>
+                        <form id="checkout-form" novalidate>
+                            <div class="form-group">
+                                <label for="name">Full Name</label>
+                                <input type="text" id="name" name="name" required>
+                                <div class="error-message" id="name-error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                                <div class="error-message" id="email-error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone</label>
+                                <input type="tel" id="phone" name="phone" required>
+                                <div class="error-message" id="phone-error"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <input type="text" id="address" name="address" required>
+                                <div class="error-message" id="address-error"></div>
+                            </div>
+                            <button type="submit" class="btn">Place Order</button>
+                        </form>
+                    </section>
+                    <aside class="order-summary" aria-labelledby="order-summary-heading">
+                        <h2 id="order-summary-heading">Order Summary</h2>
+                        <ul id="order-items-list">
+                            <!-- Order items will be injected by JavaScript -->
+                        </ul>
+                        <p id="order-total">Total: $0.00</p>
+                    </aside>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 ShopSphere. All Rights Reserved.</p>
-            </div>
+        </div>
+
+        <div id="order-confirmation" role="alert" style="display: none;">
+            <!-- Order confirmation will be shown here -->
+        </div>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2025 ShopZen. All Rights Reserved.</p>
         </div>
     </footer>
-    <script src="scripts/products.js" defer></script>
-    <script src="scripts/app.js" defer></script>
+
+    <script src="scripts/products.js"></script>
+    <script src="scripts/app.js"></script>
 </body>
 </html>

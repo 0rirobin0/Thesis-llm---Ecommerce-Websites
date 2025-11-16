@@ -1,66 +1,84 @@
+// /scripts/products.js
+
 const products = [
-    {
-        id: 1,
-        name: "Running Shoes",
-        price: 89.99,
-        category: "shoes",
-        image: "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg",
-        description: "High-performance running shoes for all types of runners."
-    },
-    {
-        id: 2,
-        name: "Leather Jacket",
-        price: 249.99,
-        category: "apparel",
-        image: "https://images.pexels.com/photos/1124465/pexels-photo-1124465.jpeg",
-        description: "A stylish and durable leather jacket."
-    },
-    {
-        id: 3,
-        name: "Wireless Headphones",
-        price: 199.99,
-        category: "electronics",
-        image: "https://images.pexels.com/photos/3825572/pexels-photo-3825572.jpeg",
-        description: "Noise-cancelling wireless headphones with amazing sound quality."
-    },
-    {
-        id: 4,
-        name: "T-shirt",
-        price: 29.99,
-        category: "apparel",
-        image: "https://images.pexels.com/photos/1261422/pexels-photo-1261422.jpeg",
-        description: "A comfortable and stylish t-shirt."
-    },
-    {
-        id: 5,
-        name: "Sneakers",
-        price: 129.99,
-        category: "shoes",
-        image: "https://images.pexels.com/photos/1032110/pexels-photo-1032110.jpeg",
-        description: "Casual sneakers for everyday wear."
-    },
-    {
-        id: 6,
-        name: "Smartwatch",
-        price: 349.99,
-        category: "electronics",
-        image: "https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg",
-        description: "A smartwatch with all the latest features."
-    },
-    {
-        id: 7,
-        name: "Jeans",
-        price: 79.99,
-        category: "apparel",
-        image: "https://images.pexels.com/photos/4210866/pexels-photo-4210866.jpeg",
-        description: "Classic blue jeans for a timeless look."
-    },
-    {
-        id: 8,
-        name: "Laptop",
-        price: 1299.99,
-        category: "electronics",
-        image: "https://images.pexels.com/photos/205421/pexels-photo-205421.jpeg",
-        description: "A powerful laptop for work and play."
-    }
+  {
+    id: 1,
+    name: "Running Shoes",
+    category: "Shoes",
+    price: 79.99,
+    image: "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "Lightweight and comfortable running shoes, perfect for your daily jog.",
+  },
+  {
+    id: 2,
+    name: "Leather Boots",
+    category: "Shoes",
+    price: 149.99,
+    image: "https://images.pexels.com/photos/267301/pexels-photo-267301.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "Durable and stylish leather boots for any occasion.",
+  },
+  {
+    id: 3,
+    name: "Cotton T-Shirt",
+    category: "Apparel",
+    price: 24.99,
+    image: "https://images.pexels.com/photos/428338/pexels-photo-428338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "A classic, soft cotton t-shirt available in various colors.",
+  },
+  {
+    id: 4,
+    name: "Denim Jacket",
+    category: "Apparel",
+    price: 89.99,
+    image: "https://images.pexels.com/photos/161709/new-york-usa-street-style-161709.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "A timeless denim jacket that completes any casual look.",
+  },
+  {
+    id: 5,
+    name: "Wireless Headphones",
+    category: "Electronics",
+    price: 199.99,
+    image: "https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "High-fidelity wireless headphones with noise-cancellation.",
+  },
+  {
+    id: 6,
+    name: "Smartwatch",
+    category: "Electronics",
+    price: 249.99,
+    image: "https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "Stay connected and track your fitness with this modern smartwatch.",
+  },
+  {
+    id: 7,
+    name: "Classic Sneakers",
+    category: "Shoes",
+    price: 65.00,
+    image: "https://images.pexels.com/photos/2421374/pexels-photo-2421374.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "Versatile and comfortable sneakers for everyday wear.",
+  },
+  {
+    id: 8,
+    name: "Hoodie",
+    category: "Apparel",
+    price: 55.00,
+    image: "https://images.pexels.com/photos/7129693/pexels-photo-7129693.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "A warm and cozy hoodie, perfect for cooler weather.",
+  },
+  {
+    id: 9,
+    name: "Bluetooth Speaker",
+    category: "Electronics",
+    price: 45.50,
+    image: "https://images.pexels.com/photos/1279813/pexels-photo-1279813.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "Portable Bluetooth speaker with rich, powerful sound.",
+  },
+  {
+    id: 10,
+    name: "Leather Wallet",
+    category: "Accessories",
+    price: 39.99,
+    image: "https://images.pexels.com/photos/983297/pexels-photo-983297.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: "A sleek and durable leather wallet with multiple compartments.",
+  }
 ];

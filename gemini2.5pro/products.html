@@ -1,118 +1,88 @@
+<!-- /products.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Products - ShopSphere</title>
-    <meta name="description" content="Browse our collection of high-quality products. From electronics to fashion, find everything you need at ShopSphere.">
+    <title>All Products - E-Commerce</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <meta name="description" content="Browse our full collection of high-quality products, including shoes, apparel, and electronics.">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.yourdomain.com/products.html">
-    <meta property="og:title" content="Our Products - ShopSphere">
-    <meta property="og:description" content="Browse our collection of high-quality products. From electronics to fashion, find everything you need at ShopSphere.">
-    <meta property="og:image" content="https://www.yourdomain.com/images/og-products.jpg">
+    <meta property="og:url" content="https://example.com/products.html">
+    <meta property="og:title" content="All Products - E-Commerce">
+    <meta property="og:description" content="Browse our full collection of high-quality products, including shoes, apparel, and electronics.">
+    <meta property="og:image" content="https://images.pexels.com/photos/398532/pexels-photo-398532.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.yourdomain.com/products.html">
-    <meta property="twitter:title" content="Our Products - ShopSphere">
-    <meta property="twitter:description" content="Browse our collection of high-quality products. From electronics to fashion, find everything you need at ShopSphere.">
-    <meta property="twitter:image" content="https://www.yourdomain.com/images/og-products.jpg">
-
-    <link rel="stylesheet" href="styles/style.css">
+    <meta property="twitter:url" content="https://example.com/products.html">
+    <meta property="twitter:title" content="All Products - E-Commerce">
+    <meta property="twitter:description" content="Browse our full collection of high-quality products, including shoes, apparel, and electronics.">
+    <meta property="twitter:image" content="https://images.pexels.com/photos/398532/pexels-photo-398532.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div id="toast-container"></div>
-    <header>
-        <nav class="container">
-            <a href="index.html" class="logo">ShopSphere</a>
-            <ul>
-                <li><a href="products.html" aria-current="page">Products</a></li>
-                <li><a href="cart.html">Cart <span class="cart-count">0</span></a></li>
-                <li><a href="checkout.html">Checkout</a></li>
-            </ul>
-        </nav>
+
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">ShopZen</a>
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html" class="cart-icon" aria-label="View Shopping Cart">
+                        Cart
+                        <span id="cart-count" aria-live="polite">0</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Products</li>
-        </ol>
-    </nav>
+
     <main id="main-content" class="container">
-        <h1>Products</h1>
-        <div class="filters">
-            <div class="form-group">
-                <label for="search">Search products</label>
-                <input type="text" id="search" class="form-control" placeholder="e.g. Running Shoes">
-            </div>
-            <div class="form-group">
-                <label for="category">Filter by category</label>
-                <select id="category" class="form-control">
-                    <option value="all">All categories</option>
-                    <option value="shoes">Shoes</option>
-                    <option value="apparel">Apparel</option>
-                    <option value="electronics">Electronics</option>
+        <section id="products-page">
+            <header class="products-header">
+                <h1>Our Products</h1>
+            </header>
+
+            <aside class="filters" aria-label="Product Filters">
+                <input type="search" id="search" placeholder="Search products..." aria-label="Search products">
+                <select id="category-filter" aria-label="Filter by category">
+                    <option value="all">All Categories</option>
                 </select>
-            </div>
-            <div class="form-group">
-                <label for="sort">Sort by</label>
-                <select id="sort" class="form-control">
-                    <option value="default">Default</option>
+                <select id="sort-filter" aria-label="Sort by price">
+                    <option value="default">Sort by</option>
                     <option value="price-asc">Price: Low to High</option>
                     <option value="price-desc">Price: High to Low</option>
                 </select>
+            </aside>
+
+            <div class="product-grid" id="product-list" aria-live="polite">
+                <!-- Products will be injected by JavaScript -->
             </div>
-        </div>
-        <div id="product-list" class="product-grid" aria-live="polite">
-            <!-- Products will be injected here by JavaScript -->
-        </div>
+        </section>
     </main>
-    <footer class="site-footer">
+
+    <footer class="main-footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h4>Navigate</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="#">Our Story</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping & Returns</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Social</h4>
-                    <ul>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 ShopSphere. All Rights Reserved.</p>
-            </div>
+            <p>&copy; 2025 ShopZen. All Rights Reserved.</p>
         </div>
     </footer>
-    <script src="scripts/products.js" defer></script>
-    <script src="scripts/app.js" defer></script>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification"></div>
+
+    <!-- Modal for Quick View -->
+    <div id="quick-view-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="quick-view-content"></div>
+        </div>
+    </div>
+
+    <script src="scripts/products.js"></script>
+    <script src="scripts/app.js"></script>
 </body>
 </html>

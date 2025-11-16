@@ -1,101 +1,81 @@
+<!-- /index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ShopSphere - Your One-Stop Online Shop</title>
-    <meta name="description" content="Discover a wide range of products at ShopSphere. We offer the best deals on electronics, fashion, and more. Shop now for a seamless online experience.">
-    
+    <title>E-Commerce Home - Your One-Stop Shop</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <meta name="description" content="Welcome to our modern eCommerce store. Discover our collection of high-quality products.">
+    <meta name="description" content="Discover a wide range of products from electronics to apparel. High-quality items at unbeatable prices.">
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.yourdomain.com/index.html">
-    <meta property="og:title" content="ShopSphere - Your One-Stop Online Shop">
-    <meta property="og:description" content="Discover a wide range of products at ShopSphere. We offer the best deals on electronics, fashion, and more. Shop now for a seamless online experience.">
-    <meta property="og:image" content="https://www.yourdomain.com/images/og-image.jpg">
+    <meta property="og:url" content="https://example.com/">
+    <meta property="og:title" content="E-Commerce Home - Your One-Stop Shop">
+    <meta property="og:description" content="Discover a wide range of products from electronics to apparel. High-quality items at unbeatable prices.">
+    <meta property="og:image" content="https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://www.yourdomain.com/index.html">
-    <meta property="twitter:title" content="ShopSphere - Your One-Stop Online Shop">
-    <meta property="twitter:description" content="Discover a wide range of products at ShopSphere. We offer the best deals on electronics, fashion, and more. Shop now for a seamless online experience.">
-    <meta property="twitter:image" content="https://www.yourdomain.com/images/og-image.jpg">
-    
-    <link rel="preload" href="/images/hero-background.jpg" as="image">
-    <link rel="stylesheet" href="styles/style.css">
+    <meta property="twitter:url" content="https://example.com/">
+    <meta property="twitter:title" content="E-Commerce Home - Your One-Stop Shop">
+    <meta property="twitter:description" content="Discover a wide range of products from electronics to apparel. High-quality items at unbeatable prices.">
+    <meta property="twitter:image" content="https://images.pexels.com/photos/3769747/pexels-photo-3769747.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
 </head>
 <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    <div id="toast-container"></div>
-    <header>
-        <nav class="container">
-            <a href="index.html" class="logo" aria-current="page">ShopSphere</a>
-            <ul>
-                <li><a href="products.html">Products</a></li>
-                <li><a href="cart.html">Cart <span class="cart-count">0</span></a></li>
-                <li><a href="checkout.html">Checkout</a></li>
-            </ul>
-        </nav>
+
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">ShopZen</a>
+            <nav class="main-nav" aria-label="Main Navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html">Products</a></li>
+                    <li><a href="cart.html" class="cart-icon" aria-label="View Shopping Cart">
+                        Cart
+                        <span id="cart-count" aria-live="polite">0</span>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
+
     <main id="main-content">
         <section class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Discover Your Next Favorite Thing</h1>
-                    <p>Explore our curated collection of high-quality products and find something you'll love.</p>
-                    <a href="products.html" class="btn btn-primary">Shop All Products</a>
-                </div>
-            </div>
+            <h1>Welcome to ShopZen</h1>
+            <p>Discover a world of quality and style.</p>
+            <a href="products.html" class="btn">Shop Now</a>
         </section>
 
-        <section class="featured-products container">
-            <h2>Featured Products</h2>
+        <section class="container">
+            <h2 style="text-align: center; margin-bottom: 2rem; font-size: 2rem;">Featured Products</h2>
+            <!-- Featured products could be dynamically loaded here -->
             <div class="product-grid" id="featured-products">
-                <!-- Featured products will be injected here by app.js -->
+                <!-- Products will be injected by JavaScript -->
             </div>
         </section>
     </main>
-    <footer class="site-footer">
+
+    <footer class="main-footer">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-column">
-                    <h4>Navigate</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="cart.html">Cart</a></li>
-                        <li><a href="checkout.html">Checkout</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>About Us</h4>
-                    <ul>
-                        <li><a href="#">Our Story</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Support</h4>
-                    <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping & Returns</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h4>Social</h4>
-                    <ul>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Instagram</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 ShopSphere. All Rights Reserved.</p>
-            </div>
+            <p>&copy; 2025 ShopZen. All Rights Reserved.</p>
         </div>
     </footer>
-    <script src="scripts/app.js" defer></script>
+
+    <!-- Toast Notification -->
+    <div id="toast-notification"></div>
+
+    <!-- Modal for Quick View -->
+    <div id="quick-view-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div id="quick-view-content"></div>
+        </div>
+    </div>
+
+    <script src="scripts/products.js"></script>
+    <script src="scripts/app.js"></script>
 </body>
 </html>
