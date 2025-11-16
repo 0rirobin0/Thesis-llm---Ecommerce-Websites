@@ -11,6 +11,44 @@ import { products } from './products.js';
 // ===========================
 
 /**
+ * Sanitize HTML to prevent XSS attacks
+ * Escapes all HTML entities in user-provided strings
+ */
+const sanitizeHTML = (str) => {
+    if (typeof str !== 'string') return '';
+    const temp = document.createElement('div');
+    temp.textContent = str;
+    return temp.innerHTML;
+};
+
+/**
+ * Validate and sanitize numeric input
+ */
+const sanitizeNumber = (value, min = 0, max = Number.MAX_SAFE_INTEGER) => {
+    const num = parseInt(value, 10);
+    if (isNaN(num)) return min;
+    return Math.max(min, Math.min(max, num));
+};
+
+/**
+ * Validate cart item structure
+ */
+const isValidCartItem = (item) => {
+    return item &&
+        typeof item.id === 'number' &&
+        typeof item.name === 'string' &&
+        typeof item.price === 'number' &&
+        typeof item.quantity === 'number' &&
+        item.id > 0 &&
+        item.price >= 0 &&
+        item.quantity > 0 &&
+        item.quantity <= 999 &&
+        item.name.length <= 200 &&
+        typeof item.image === 'string' &&
+        typeof item.imageAlt === 'string';
+};
+
+/**
  * Format price to USD currency
  */
 const formatPrice = (price) => {
@@ -40,11 +78,26 @@ const generateOrderId = () => {
 // ===========================
 
 /**
- * Get cart from localStorage
+ * Get cart from localStorage with error handling and validation
  */
 const getCart = () => {
-    const cart = localStorage.getItem('shophub_cart');
-    return cart ? JSON.parse(cart) : [];
+    try {
+        const cart = localStorage.getItem('shophub_cart');
+        if (!cart) return [];
+        
+        const parsed = JSON.parse(cart);
+        if (!Array.isArray(parsed)) {
+            console.warn('Invalid cart format, resetting');
+            return [];
+        }
+        
+        // Validate and sanitize each item
+        return parsed.filter(isValidCartItem);
+    } catch (e) {
+        console.error('Cart parsing error:', e);
+        localStorage.removeItem('shophub_cart');
+        return [];
+    }
 };
 
 /**
@@ -56,7 +109,7 @@ const saveCart = (cart) => {
 };
 
 /**
- * Add product to cart
+ * Add product to cart with input validation
  */
 const addToCart = (productId, quantity = 1) => {
     const cart = getCart();
@@ -64,10 +117,13 @@ const addToCart = (productId, quantity = 1) => {
     
     if (!product) return;
 
+    // Sanitize quantity input
+    const safeQuantity = sanitizeNumber(quantity, 1, 99);
+
     const existingItem = cart.find(item => item.id === productId);
     
     if (existingItem) {
-        existingItem.quantity += quantity;
+        existingItem.quantity = sanitizeNumber(existingItem.quantity + safeQuantity, 1, 999);
     } else {
         cart.push({
             id: product.id,
@@ -75,7 +131,7 @@ const addToCart = (productId, quantity = 1) => {
             price: product.price,
             image: product.image,
             imageAlt: product.imageAlt,
-            quantity: quantity
+            quantity: safeQuantity
         });
     }
     
@@ -84,17 +140,18 @@ const addToCart = (productId, quantity = 1) => {
 };
 
 /**
- * Update cart item quantity
+ * Update cart item quantity with validation
  */
 const updateCartQuantity = (productId, quantity) => {
     const cart = getCart();
     const item = cart.find(item => item.id === productId);
     
     if (item) {
-        if (quantity <= 0) {
+        const safeQuantity = sanitizeNumber(quantity, 0, 999);
+        if (safeQuantity <= 0) {
             removeFromCart(productId);
         } else {
-            item.quantity = quantity;
+            item.quantity = safeQuantity;
             saveCart(cart);
         }
     }
@@ -139,18 +196,19 @@ const updateCartBadge = () => {
     const badge = document.getElementById('cartBadge');
     if (badge) {
         const srText = badge.querySelector('.sr-only');
-        const countText = totalItems.toString();
         
         if (srText) {
-            // Update visible count (not including sr-only text)
-            const textNode = Array.from(badge.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
-            if (textNode) {
-                textNode.textContent = countText;
-            } else {
-                badge.appendChild(document.createTextNode(countText));
-            }
+            // Remove all text nodes (keep only sr-only element)
+            Array.from(badge.childNodes).forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    node.remove();
+                }
+            });
+            // Add new text node with count
+            badge.insertBefore(document.createTextNode(totalItems.toString()), srText);
         } else {
-            badge.textContent = countText;
+            // No sr-only element, just replace all content
+            badge.textContent = totalItems.toString();
         }
         
         badge.style.display = totalItems > 0 ? 'flex' : 'none';
@@ -195,7 +253,7 @@ const showNotification = (message, duration = 3000, type = 'success') => {
 };
 
 /**
- * Show confirmation dialog
+ * Show confirmation dialog with XSS protection
  */
 const showConfirmation = (title, message, onConfirm, onCancel) => {
     // Remove existing dialog if any
@@ -207,31 +265,72 @@ const showConfirmation = (title, message, onConfirm, onCancel) => {
     dialog.setAttribute('role', 'alertdialog');
     dialog.setAttribute('aria-labelledby', 'confirm-title');
     dialog.setAttribute('aria-describedby', 'confirm-message');
-    dialog.innerHTML = `
-        <div class="confirmation-backdrop" aria-hidden="true"></div>
-        <div class="confirmation-content">
-            <div class="confirmation-icon" aria-hidden="true">⚠</div>
-            <h3 id="confirm-title" class="confirmation-title">${title}</h3>
-            <p id="confirm-message" class="confirmation-message">${message}</p>
-            <div class="confirmation-actions">
-                <button class="btn btn-secondary" id="confirmCancel">Cancel</button>
-                <button class="btn btn-danger" id="confirmOk">Remove</button>
-            </div>
-        </div>
-    `;
+    
+    // Create backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'confirmation-backdrop';
+    backdrop.setAttribute('aria-hidden', 'true');
+    
+    // Create content container
+    const content = document.createElement('div');
+    content.className = 'confirmation-content';
+    
+    // Create icon
+    const icon = document.createElement('div');
+    icon.className = 'confirmation-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = '⚠';
+    
+    // Create title (sanitized)
+    const titleEl = document.createElement('h3');
+    titleEl.id = 'confirm-title';
+    titleEl.className = 'confirmation-title';
+    titleEl.textContent = title;
+    
+    // Create message (sanitized)
+    const messageEl = document.createElement('p');
+    messageEl.id = 'confirm-message';
+    messageEl.className = 'confirmation-message';
+    messageEl.textContent = message;
+    
+    // Create actions container
+    const actions = document.createElement('div');
+    actions.className = 'confirmation-actions';
+    
+    // Create cancel button
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'btn btn-secondary';
+    cancelBtn.id = 'confirmCancel';
+    cancelBtn.textContent = 'Cancel';
+    
+    // Create confirm button
+    const okBtn = document.createElement('button');
+    okBtn.className = 'btn btn-danger';
+    okBtn.id = 'confirmOk';
+    okBtn.textContent = 'Remove';
+    
+    // Assemble dialog
+    actions.appendChild(cancelBtn);
+    actions.appendChild(okBtn);
+    content.appendChild(icon);
+    content.appendChild(titleEl);
+    content.appendChild(messageEl);
+    content.appendChild(actions);
+    dialog.appendChild(backdrop);
+    dialog.appendChild(content);
     
     document.body.appendChild(dialog);
     
     // Focus on primary action
-    setTimeout(() => document.getElementById('confirmOk').focus(), 100);
+    setTimeout(() => okBtn.focus(), 100);
     
     // Event handlers
-    document.getElementById('confirmOk').addEventListener('click', () => {
+    okBtn.addEventListener('click', () => {
         dialog.remove();
         if (onConfirm) onConfirm();
     });
     
-    document.getElementById('confirmCancel').addEventListener('click', () => {
+    cancelBtn.addEventListener('click', () => {
         dialog.remove();
         if (onCancel) onCancel();
     });
@@ -247,7 +346,7 @@ const showConfirmation = (title, message, onConfirm, onCancel) => {
     document.addEventListener('keydown', handleEscape);
     
     // Click backdrop to close
-    dialog.querySelector('.confirmation-backdrop').addEventListener('click', () => {
+    backdrop.addEventListener('click', () => {
         dialog.remove();
         if (onCancel) onCancel();
     });
@@ -298,6 +397,78 @@ const buttonSuccess = (button, duration = 1500) => {
 // ===========================
 
 /**
+ * Create a safe product card element (XSS-protected)
+ */
+const createProductCard = (product) => {
+    const article = document.createElement('article');
+    article.className = 'product-card';
+    article.setAttribute('role', 'listitem');
+    
+    // Create link
+    const link = document.createElement('a');
+    link.href = `./product.html?id=${product.id}`;
+    link.className = 'product-link';
+    
+    // Create image container
+    const imageDiv = document.createElement('div');
+    imageDiv.className = 'product-image';
+    
+    // Create image
+    const img = document.createElement('img');
+    img.src = product.image;
+    if (product.srcset) img.srcset = product.srcset;
+    if (product.sizes) img.sizes = product.sizes;
+    img.alt = product.imageAlt;
+    img.loading = 'lazy';
+    img.width = 300;
+    img.height = 300;
+    
+    // Create info container
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'product-info';
+    
+    // Create name
+    const name = document.createElement('h3');
+    name.className = 'product-name';
+    name.textContent = product.name; // Automatically escaped
+    
+    // Create category
+    const category = document.createElement('p');
+    category.className = 'product-category';
+    category.textContent = product.category;
+    
+    // Create price
+    const price = document.createElement('p');
+    price.className = 'product-price';
+    price.textContent = formatPrice(product.price);
+    
+    // Create button
+    const button = document.createElement('button');
+    button.className = 'btn btn-primary btn-add-to-cart';
+    button.setAttribute('data-product-id', product.id);
+    button.setAttribute('aria-label', `Add ${product.name} to cart`);
+    button.textContent = 'Add to Cart';
+    
+    // Assemble elements
+    imageDiv.appendChild(img);
+    infoDiv.appendChild(name);
+    infoDiv.appendChild(category);
+    infoDiv.appendChild(price);
+    link.appendChild(imageDiv);
+    link.appendChild(infoDiv);
+    article.appendChild(link);
+    article.appendChild(button);
+    
+    // Add event listener
+    button.addEventListener('click', () => {
+        addToCart(product.id);
+        buttonSuccess(button);
+    });
+    
+    return article;
+};
+
+/**
  * Initialize Home Page
  */
 const initHomePage = () => {
@@ -313,42 +484,13 @@ const initHomePage = () => {
         // Show first 3 products as featured
         const featuredProducts = products.slice(0, 3);
         
-        featuredContainer.innerHTML = featuredProducts.map(product => `
-            <article class="product-card" role="listitem">
-                <a href="./product.html?id=${product.id}" class="product-link">
-                    <div class="product-image">
-                        <img 
-                            src="${product.image}" 
-                            srcset="${product.srcset || product.image}" 
-                            sizes="${product.sizes || '300px'}"
-                            alt="${product.imageAlt}" 
-                            loading="lazy"
-                            width="300"
-                            height="300">
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">${product.name}</h3>
-                        <p class="product-category">${product.category}</p>
-                        <p class="product-price">${formatPrice(product.price)}</p>
-                    </div>
-                </a>
-                <button 
-                    class="btn btn-primary btn-add-to-cart" 
-                    data-product-id="${product.id}"
-                    aria-label="Add ${product.name} to cart"
-                >
-                    Add to Cart
-                </button>
-            </article>
-        `).join('');
-
-        // Add event listeners to all add-to-cart buttons
-        featuredContainer.querySelectorAll('.btn-add-to-cart').forEach(button => {
-            button.addEventListener('click', () => {
-                const productId = parseInt(button.getAttribute('data-product-id'));
-                addToCart(productId);
-                buttonSuccess(button);
-            });
+        // Clear container
+        featuredContainer.innerHTML = '';
+        
+        // Create and append product cards safely
+        featuredProducts.forEach(product => {
+            const card = createProductCard(product);
+            featuredContainer.appendChild(card);
         });
 
         // Remove loading state
@@ -419,42 +561,14 @@ const initProductsPage = () => {
                 document.getElementById('noResults').style.display = 'block';
             } else {
                 document.getElementById('noResults').style.display = 'none';
-                container.innerHTML = filteredProducts.map(product => `
-                    <article class="product-card" role="listitem">
-                        <a href="./product.html?id=${product.id}" class="product-link">
-                            <div class="product-image">
-                                <img 
-                                    src="${product.image}" 
-                                    srcset="${product.srcset || product.image}" 
-                                    sizes="${product.sizes || '300px'}"
-                                    alt="${product.imageAlt}" 
-                                    loading="lazy"
-                                    width="300"
-                                    height="300">
-                            </div>
-                            <div class="product-info">
-                                <h3 class="product-name">${product.name}</h3>
-                                <p class="product-category">${product.category}</p>
-                                <p class="product-price">${formatPrice(product.price)}</p>
-                            </div>
-                        </a>
-                        <button 
-                            class="btn btn-primary btn-add-to-cart" 
-                            data-product-id="${product.id}"
-                            aria-label="Add ${product.name} to cart"
-                        >
-                            Add to Cart
-                        </button>
-                    </article>
-                `).join('');
-
-                // Add event listeners to all add-to-cart buttons
-                container.querySelectorAll('.btn-add-to-cart').forEach(button => {
-                    button.addEventListener('click', () => {
-                        const productId = parseInt(button.getAttribute('data-product-id'));
-                        addToCart(productId);
-                        buttonSuccess(button);
-                    });
+                
+                // Clear container
+                container.innerHTML = '';
+                
+                // Create and append product cards safely
+                filteredProducts.forEach(product => {
+                    const card = createProductCard(product);
+                    container.appendChild(card);
                 });
             }
 
@@ -505,99 +619,169 @@ const initProductPage = () => {
         return;
     }
 
-    // Update breadcrumb
-    document.getElementById('breadcrumbProduct').textContent = product.name;
+    // Update breadcrumb safely
+    const breadcrumb = document.getElementById('breadcrumbProduct');
+    if (breadcrumb) breadcrumb.textContent = product.name;
 
-    // Display product details
-    container.innerHTML = `
-        <div class="product-detail-grid">
-            <div class="product-detail-image">
-                <img 
-                    src="${product.image}" 
-                    srcset="${product.srcset || product.image}" 
-                    sizes="${product.sizes || '500px'}"
-                    alt="${product.imageAlt}" 
-                    loading="lazy" 
-                    width="500" 
-                    height="500">
-            </div>
-            <div class="product-detail-info">
-                <span class="product-detail-category">${product.category}</span>
-                <h1 class="product-detail-title">${product.name}</h1>
-                <p class="product-detail-price">${formatPrice(product.price)}</p>
-                <p class="product-detail-description">${product.description}</p>
-                
-                <div class="product-detail-actions">
-                    <div class="quantity-selector">
-                        <label for="quantity" class="quantity-label">Quantity:</label>
-                        <div class="quantity-controls" role="group" aria-labelledby="quantity">
-                            <button 
-                                id="decreaseQty" 
-                                class="quantity-btn" 
-                                aria-label="Decrease quantity"
-                                type="button"
-                            >−</button>
-                            <input 
-                                type="number" 
-                                id="quantity" 
-                                class="quantity-input" 
-                                value="1" 
-                                min="1" 
-                                max="99"
-                                aria-label="Product quantity"
-                                role="spinbutton"
-                                aria-valuenow="1"
-                                aria-valuemin="1"
-                                aria-valuemax="99"
-                            >
-                            <button 
-                                id="increaseQty" 
-                                class="quantity-btn" 
-                                aria-label="Increase quantity"
-                                type="button"
-                            >+</button>
-                        </div>
-                    </div>
-                    
-                    <button id="addToCartBtn" class="btn btn-primary btn-large" type="button">
-                        Add to Cart
-                    </button>
-                    
-                    <a href="./products.html" class="btn btn-secondary btn-large">
-                        Back to Products
-                    </a>
-                </div>
-            </div>
-        </div>
-    `;
+    // Clear container
+    container.innerHTML = '';
+    
+    // Create product detail grid
+    const grid = document.createElement('div');
+    grid.className = 'product-detail-grid';
+    
+    // Create image container
+    const imageDiv = document.createElement('div');
+    imageDiv.className = 'product-detail-image';
+    
+    const img = document.createElement('img');
+    img.src = product.image;
+    if (product.srcset) img.srcset = product.srcset;
+    if (product.sizes) img.sizes = product.sizes;
+    img.alt = product.imageAlt;
+    img.loading = 'lazy';
+    img.width = 500;
+    img.height = 500;
+    imageDiv.appendChild(img);
+    
+    // Create info container
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'product-detail-info';
+    
+    // Category
+    const categorySpan = document.createElement('span');
+    categorySpan.className = 'product-detail-category';
+    categorySpan.textContent = product.category;
+    
+    // Title
+    const title = document.createElement('h1');
+    title.className = 'product-detail-title';
+    title.textContent = product.name;
+    
+    // Price
+    const priceP = document.createElement('p');
+    priceP.className = 'product-detail-price';
+    priceP.textContent = formatPrice(product.price);
+    
+    // Description
+    const descP = document.createElement('p');
+    descP.className = 'product-detail-description';
+    descP.textContent = product.description;
+    
+    // Actions container
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'product-detail-actions';
+    
+    // Quantity selector
+    const qtySelector = document.createElement('div');
+    qtySelector.className = 'quantity-selector';
+    
+    const qtyLabel = document.createElement('label');
+    qtyLabel.htmlFor = 'quantity';
+    qtyLabel.className = 'quantity-label';
+    qtyLabel.textContent = 'Quantity:';
+    
+    const qtyControls = document.createElement('div');
+    qtyControls.className = 'quantity-controls';
+    qtyControls.setAttribute('role', 'group');
+    qtyControls.setAttribute('aria-labelledby', 'quantity');
+    
+    const decreaseBtn = document.createElement('button');
+    decreaseBtn.id = 'decreaseQty';
+    decreaseBtn.className = 'quantity-btn';
+    decreaseBtn.setAttribute('aria-label', 'Decrease quantity');
+    decreaseBtn.type = 'button';
+    decreaseBtn.textContent = '−';
+    
+    const qtyInput = document.createElement('input');
+    qtyInput.type = 'number';
+    qtyInput.id = 'quantity';
+    qtyInput.className = 'quantity-input';
+    qtyInput.value = '1';
+    qtyInput.min = '1';
+    qtyInput.max = '99';
+    qtyInput.setAttribute('aria-label', 'Product quantity');
+    qtyInput.setAttribute('role', 'spinbutton');
+    qtyInput.setAttribute('aria-valuenow', '1');
+    qtyInput.setAttribute('aria-valuemin', '1');
+    qtyInput.setAttribute('aria-valuemax', '99');
+    
+    const increaseBtn = document.createElement('button');
+    increaseBtn.id = 'increaseQty';
+    increaseBtn.className = 'quantity-btn';
+    increaseBtn.setAttribute('aria-label', 'Increase quantity');
+    increaseBtn.type = 'button';
+    increaseBtn.textContent = '+';
+    
+    qtyControls.appendChild(decreaseBtn);
+    qtyControls.appendChild(qtyInput);
+    qtyControls.appendChild(increaseBtn);
+    qtySelector.appendChild(qtyLabel);
+    qtySelector.appendChild(qtyControls);
+    
+    // Add to cart button
+    const addBtn = document.createElement('button');
+    addBtn.id = 'addToCartBtn';
+    addBtn.className = 'btn btn-primary btn-large';
+    addBtn.type = 'button';
+    addBtn.textContent = 'Add to Cart';
+    
+    // Back button
+    const backLink = document.createElement('a');
+    backLink.href = './products.html';
+    backLink.className = 'btn btn-secondary btn-large';
+    backLink.textContent = 'Back to Products';
+    
+    // Assemble actions
+    actionsDiv.appendChild(qtySelector);
+    actionsDiv.appendChild(addBtn);
+    actionsDiv.appendChild(backLink);
+    
+    // Assemble info
+    infoDiv.appendChild(categorySpan);
+    infoDiv.appendChild(title);
+    infoDiv.appendChild(priceP);
+    infoDiv.appendChild(descP);
+    infoDiv.appendChild(actionsDiv);
+    
+    // Assemble grid
+    grid.appendChild(imageDiv);
+    grid.appendChild(infoDiv);
+    
+    // Add to container
+    container.appendChild(grid);
 
     // Quantity controls
-    const qtyInput = document.getElementById('quantity');
     const updateAriaValue = () => {
         qtyInput.setAttribute('aria-valuenow', qtyInput.value);
     };
     
-    document.getElementById('decreaseQty').addEventListener('click', () => {
-        if (qtyInput.value > 1) {
-            qtyInput.value = parseInt(qtyInput.value) - 1;
-            updateAriaValue();
-        }
-    });
-    document.getElementById('increaseQty').addEventListener('click', () => {
-        if (qtyInput.value < 99) {
-            qtyInput.value = parseInt(qtyInput.value) + 1;
+    decreaseBtn.addEventListener('click', () => {
+        const currentValue = sanitizeNumber(qtyInput.value, 1, 99);
+        if (currentValue > 1) {
+            qtyInput.value = currentValue - 1;
             updateAriaValue();
         }
     });
     
-    qtyInput.addEventListener('change', updateAriaValue);
+    increaseBtn.addEventListener('click', () => {
+        const currentValue = sanitizeNumber(qtyInput.value, 1, 99);
+        if (currentValue < 99) {
+            qtyInput.value = currentValue + 1;
+            updateAriaValue();
+        }
+    });
+    
+    qtyInput.addEventListener('change', () => {
+        qtyInput.value = sanitizeNumber(qtyInput.value, 1, 99);
+        updateAriaValue();
+    });
 
     // Add to cart
-    document.getElementById('addToCartBtn').addEventListener('click', () => {
-        const quantity = parseInt(qtyInput.value);
-        const button = document.getElementById('addToCartBtn');
+    addBtn.addEventListener('click', () => {
+        const quantity = sanitizeNumber(qtyInput.value, 1, 99);
         addToCart(product.id, quantity);
-        buttonSuccess(button);
+        buttonSuccess(addBtn);
     });
 };
 
@@ -624,52 +808,105 @@ const initCartPage = () => {
         summary.style.display = 'block';
         emptyCart.style.display = 'none';
 
-        container.innerHTML = cart.map(item => `
-            <article class="cart-item" role="listitem">
-                <img src="${item.image}" alt="${item.imageAlt}" class="cart-item-image" loading="lazy" width="100" height="100">
-                <div class="cart-item-details">
-                    <h3 class="cart-item-name">${item.name}</h3>
-                    <p class="cart-item-price">${formatPrice(item.price)}</p>
-                </div>
-                <div class="cart-item-actions">
-                    <div class="quantity-controls" role="group" aria-label="Quantity controls for ${item.name}">
-                        <button 
-                            class="quantity-btn" 
-                            data-product-id="${item.id}"
-                            data-action="decrease"
-                            aria-label="Decrease quantity of ${item.name}"
-                            type="button"
-                        >−</button>
-                        <input 
-                            type="number" 
-                            class="quantity-input" 
-                            value="${item.quantity}" 
-                            min="1"
-                            data-product-id="${item.id}"
-                            aria-label="Quantity of ${item.name}"
-                            role="spinbutton"
-                            aria-valuenow="${item.quantity}"
-                            aria-valuemin="1"
-                            aria-valuemax="99"
-                        >
-                        <button 
-                            class="quantity-btn" 
-                            data-product-id="${item.id}"
-                            data-action="increase"
-                            aria-label="Increase quantity of ${item.name}"
-                            type="button"
-                        >+</button>
-                    </div>
-                    <p class="cart-item-subtotal">${formatPrice(item.price * item.quantity)}</p>
-                    <button 
-                        class="btn-remove" 
-                        data-product-id="${item.id}"
-                        aria-label="Remove ${item.name} from cart"
-                        type="button"
-                    >×</button>
-                </div>
-            </article>
-        `).join('');
+        // Clear container
+        container.innerHTML = '';
+
+        // Create cart items safely
+        cart.forEach(item => {
+            const article = document.createElement('article');
+            article.className = 'cart-item';
+            article.setAttribute('role', 'listitem');
+            
+            // Image
+            const img = document.createElement('img');
+            img.src = item.image;
+            img.alt = item.imageAlt;
+            img.className = 'cart-item-image';
+            img.loading = 'lazy';
+            img.width = 100;
+            img.height = 100;
+            
+            // Details container
+            const detailsDiv = document.createElement('div');
+            detailsDiv.className = 'cart-item-details';
+            
+            const name = document.createElement('h3');
+            name.className = 'cart-item-name';
+            name.textContent = item.name;
+            
+            const price = document.createElement('p');
+            price.className = 'cart-item-price';
+            price.textContent = formatPrice(item.price);
+            
+            detailsDiv.appendChild(name);
+            detailsDiv.appendChild(price);
+            
+            // Actions container
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'cart-item-actions';
+            
+            // Quantity controls
+            const qtyControls = document.createElement('div');
+            qtyControls.className = 'quantity-controls';
+            qtyControls.setAttribute('role', 'group');
+            qtyControls.setAttribute('aria-label', `Quantity controls for ${item.name}`);
+            
+            const decreaseBtn = document.createElement('button');
+            decreaseBtn.className = 'quantity-btn';
+            decreaseBtn.setAttribute('data-product-id', item.id);
+            decreaseBtn.setAttribute('data-action', 'decrease');
+            decreaseBtn.setAttribute('aria-label', `Decrease quantity of ${item.name}`);
+            decreaseBtn.type = 'button';
+            decreaseBtn.textContent = '−';
+            
+            const qtyInput = document.createElement('input');
+            qtyInput.type = 'number';
+            qtyInput.className = 'quantity-input';
+            qtyInput.value = item.quantity;
+            qtyInput.min = '1';
+            qtyInput.setAttribute('data-product-id', item.id);
+            qtyInput.setAttribute('aria-label', `Quantity of ${item.name}`);
+            qtyInput.setAttribute('role', 'spinbutton');
+            qtyInput.setAttribute('aria-valuenow', item.quantity);
+            qtyInput.setAttribute('aria-valuemin', '1');
+            qtyInput.setAttribute('aria-valuemax', '99');
+            
+            const increaseBtn = document.createElement('button');
+            increaseBtn.className = 'quantity-btn';
+            increaseBtn.setAttribute('data-product-id', item.id);
+            increaseBtn.setAttribute('data-action', 'increase');
+            increaseBtn.setAttribute('aria-label', `Increase quantity of ${item.name}`);
+            increaseBtn.type = 'button';
+            increaseBtn.textContent = '+';
+            
+            qtyControls.appendChild(decreaseBtn);
+            qtyControls.appendChild(qtyInput);
+            qtyControls.appendChild(increaseBtn);
+            
+            // Subtotal
+            const subtotal = document.createElement('p');
+            subtotal.className = 'cart-item-subtotal';
+            subtotal.textContent = formatPrice(item.price * item.quantity);
+            
+            // Remove button
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'btn-remove';
+            removeBtn.setAttribute('data-product-id', item.id);
+            removeBtn.setAttribute('aria-label', `Remove ${item.name} from cart`);
+            removeBtn.type = 'button';
+            removeBtn.textContent = '×';
+            
+            actionsDiv.appendChild(qtyControls);
+            actionsDiv.appendChild(subtotal);
+            actionsDiv.appendChild(removeBtn);
+            
+            // Assemble article
+            article.appendChild(img);
+            article.appendChild(detailsDiv);
+            article.appendChild(actionsDiv);
+            
+            container.appendChild(article);
+        });
 
         // Add event listeners to quantity buttons
         container.querySelectorAll('.quantity-btn').forEach(button => {
@@ -753,17 +990,45 @@ const initCheckoutPage = () => {
         return;
     }
 
-    // Display order items
-    orderItemsList.innerHTML = cart.map(item => `
-        <div class="order-item" role="listitem">
-            <img src="${item.image}" alt="${item.imageAlt}" class="order-item-image" loading="lazy" width="60" height="60">
-            <div class="order-item-info">
-                <p class="order-item-name">${item.name}</p>
-                <p class="order-item-qty">Qty: ${item.quantity}</p>
-            </div>
-            <p class="order-item-price">${formatPrice(item.price * item.quantity)}</p>
-        </div>
-    `).join('');
+    // Display order items safely
+    orderItemsList.innerHTML = '';
+    cart.forEach(item => {
+        const orderItem = document.createElement('div');
+        orderItem.className = 'order-item';
+        orderItem.setAttribute('role', 'listitem');
+        
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.imageAlt;
+        img.className = 'order-item-image';
+        img.loading = 'lazy';
+        img.width = 60;
+        img.height = 60;
+        
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'order-item-info';
+        
+        const name = document.createElement('p');
+        name.className = 'order-item-name';
+        name.textContent = item.name;
+        
+        const qty = document.createElement('p');
+        qty.className = 'order-item-qty';
+        qty.textContent = `Qty: ${item.quantity}`;
+        
+        infoDiv.appendChild(name);
+        infoDiv.appendChild(qty);
+        
+        const price = document.createElement('p');
+        price.className = 'order-item-price';
+        price.textContent = formatPrice(item.price * item.quantity);
+        
+        orderItem.appendChild(img);
+        orderItem.appendChild(infoDiv);
+        orderItem.appendChild(price);
+        
+        orderItemsList.appendChild(orderItem);
+    });
 
     // Update totals
     const totals = calculateCartTotals();
@@ -853,10 +1118,16 @@ const initCheckoutPage = () => {
             totals: totals
         };
 
-        // Save order to localStorage
-        const orders = JSON.parse(localStorage.getItem('shophub_orders') || '[]');
-        orders.push(order);
-        localStorage.setItem('shophub_orders', JSON.stringify(orders));
+        // Save order to localStorage with error handling
+        try {
+            const orders = JSON.parse(localStorage.getItem('shophub_orders') || '[]');
+            if (Array.isArray(orders)) {
+                orders.push(order);
+                localStorage.setItem('shophub_orders', JSON.stringify(orders));
+            }
+        } catch (e) {
+            console.error('Failed to save order:', e);
+        }
 
         // Clear cart
         clearCart();
