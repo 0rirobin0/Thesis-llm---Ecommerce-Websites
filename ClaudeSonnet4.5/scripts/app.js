@@ -56,6 +56,22 @@ const formatPrice = (price) => {
 };
 
 /**
+ * Show loading state on button with spinner
+ */
+const setButtonLoading = (button, isLoading) => {
+    if (isLoading) {
+        button.disabled = true;
+        button.dataset.originalText = button.textContent;
+        button.innerHTML = '<span class="spinner" aria-hidden="true"></span> Processing...';
+        button.setAttribute('aria-busy', 'true');
+    } else {
+        button.disabled = false;
+        button.textContent = button.dataset.originalText || button.textContent;
+        button.removeAttribute('aria-busy');
+    }
+};
+
+/**
  * Get URL parameters
  */
 const getUrlParams = () => {
@@ -109,34 +125,62 @@ const saveCart = (cart) => {
 };
 
 /**
- * Add product to cart with input validation
+ * Add product to cart with input validation and loading feedback
  */
-const addToCart = (productId, quantity = 1) => {
-    const cart = getCart();
-    const product = products.find(p => p.id === productId);
-    
-    if (!product) return;
-
-    // Sanitize quantity input
-    const safeQuantity = sanitizeNumber(quantity, 1, 99);
-
-    const existingItem = cart.find(item => item.id === productId);
-    
-    if (existingItem) {
-        existingItem.quantity = sanitizeNumber(existingItem.quantity + safeQuantity, 1, 999);
-    } else {
-        cart.push({
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            imageAlt: product.imageAlt,
-            quantity: safeQuantity
-        });
+const addToCart = (productId, quantity = 1, buttonElement = null) => {
+    // Show loading state if button provided
+    if (buttonElement) {
+        buttonElement.disabled = true;
+        buttonElement.dataset.originalText = buttonElement.textContent;
+        buttonElement.innerHTML = '<span class="spinner" aria-hidden="true"></span> Adding...';
+        buttonElement.setAttribute('aria-busy', 'true');
     }
     
-    saveCart(cart);
-    showNotification('Product added to cart!');
+    // Simulate async operation for perceived responsiveness
+    setTimeout(() => {
+        const cart = getCart();
+        const product = products.find(p => p.id === productId);
+        
+        if (!product) {
+            showNotification('Product not found', 3000, 'error');
+            if (buttonElement) {
+                buttonElement.disabled = false;
+                buttonElement.textContent = buttonElement.dataset.originalText;
+                buttonElement.removeAttribute('aria-busy');
+            }
+            return;
+        }
+
+        // Sanitize quantity input
+        const safeQuantity = sanitizeNumber(quantity, 1, 99);
+
+        const existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+            existingItem.quantity = sanitizeNumber(existingItem.quantity + safeQuantity, 1, 999);
+        } else {
+            cart.push({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                image: product.image,
+                imageAlt: product.imageAlt,
+                quantity: safeQuantity
+            });
+        }
+        
+        saveCart(cart);
+        showNotification(`${product.name} added to cart!`, 3000, 'success');
+        
+        // Reset button state with success animation
+        if (buttonElement) {
+            buttonElement.disabled = false;
+            buttonElement.textContent = buttonElement.dataset.originalText;
+            buttonElement.removeAttribute('aria-busy');
+            buttonElement.classList.add('success');
+            setTimeout(() => buttonElement.classList.remove('success'), 600);
+        }
+    }, 200); // Small delay for loading feedback
 };
 
 /**

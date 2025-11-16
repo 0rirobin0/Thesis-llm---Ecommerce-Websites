@@ -16,6 +16,10 @@
     <link rel="dns-prefetch" href="https://images.unsplash.com">
     <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
     
+    <!-- Prefetch next likely page -->
+    <link rel="prefetch" href="./products.html">
+    <link rel="prefetch" href="./cart.html">
+    
     <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
@@ -60,19 +64,19 @@
                 <h2 id="categories-heading" class="section-title">Shop by Category</h2>
                 <div class="category-grid">
                     <a href="./products.html?category=shoes" class="category-card" aria-label="Browse shoes">
-                        <div class="category-icon" aria-hidden="true">👟</div>
+                        <div class="category-icon" role="img" aria-label="Shoe icon">👟</div>
                         <h3 class="category-name">Shoes</h3>
                         <p class="category-desc">Stylish footwear for every occasion</p>
                     </a>
                     
                     <a href="./products.html?category=apparel" class="category-card" aria-label="Browse apparel">
-                        <div class="category-icon" aria-hidden="true">👕</div>
+                        <div class="category-icon" role="img" aria-label="Shirt icon">👕</div>
                         <h3 class="category-name">Apparel</h3>
                         <p class="category-desc">Fashion-forward clothing</p>
                     </a>
                     
                     <a href="./products.html?category=electronics" class="category-card" aria-label="Browse electronics">
-                        <div class="category-icon" aria-hidden="true">📱</div>
+                        <div class="category-icon" role="img" aria-label="Phone icon">📱</div>
                         <h3 class="category-name">Electronics</h3>
                         <p class="category-desc">Latest tech gadgets</p>
                     </a>
