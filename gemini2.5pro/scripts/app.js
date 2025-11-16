@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM ELEMENT SELECTORS ---
     const productList = document.getElementById('product-list');
-    const featuredProductList = document.getElementById('featured-product-list');
+    const featuredProductList = document.getElementById('featured-products');
     const searchInput = document.getElementById('search');
     const categoryFilter = document.getElementById('category');
     const sortFilter = document.getElementById('sort');
@@ -166,30 +166,44 @@ document.addEventListener('DOMContentLoaded', () => {
             cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
             return;
         }
-        
+
         cart.forEach(item => {
             const cartItem = document.createElement('div');
             cartItem.classList.add('cart-item');
             const uniqueId = `quantity-${item.id}`;
-            
-            cartItem.innerHTML = `
-                <span>${item.name}</span>
-                <div>
-                    <label for="${uniqueId}" class="sr-only">Quantity for ${item.name}</label>
-                    <input type="number" id="${uniqueId}" class="form-control" value="${item.quantity}" min="1" data-product-id="${item.id}">
-                </div>
-                <span>$${(item.price * item.quantity).toFixed(2)}</span>
-                <button class="btn-danger" data-product-id="${item.id}" aria-label="Remove ${item.name} from cart">Remove</button>
-            `;
-            cartItemsContainer.appendChild(cartItem);
-        });
 
-        // Add event listeners after creating the items
-        cartItemsContainer.querySelectorAll('input[type="number"]').forEach(input => {
-            input.addEventListener('change', (e) => updateQuantity(e.target.dataset.productId, e.target.value));
-        });
-        cartItemsContainer.querySelectorAll('.btn-danger').forEach(button => {
-            button.addEventListener('click', (e) => removeFromCart(e.target.dataset.productId));
+            const itemName = document.createElement('span');
+            itemName.textContent = item.name;
+
+            const quantityControl = document.createElement('div');
+            const quantityLabel = document.createElement('label');
+            quantityLabel.htmlFor = uniqueId;
+            quantityLabel.classList.add('sr-only');
+            quantityLabel.textContent = `Quantity for ${item.name}`;
+
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.id = uniqueId;
+            quantityInput.classList.add('form-control');
+            quantityInput.value = item.quantity;
+            quantityInput.min = '1';
+            quantityInput.dataset.productId = item.id;
+            quantityInput.addEventListener('change', (e) => updateQuantity(e.target.dataset.productId, e.target.value));
+
+            quantityControl.append(quantityLabel, quantityInput);
+
+            const itemTotal = document.createElement('span');
+            itemTotal.textContent = `$${(item.price * item.quantity).toFixed(2)}`;
+
+            const removeButton = document.createElement('button');
+            removeButton.classList.add('btn-danger');
+            removeButton.dataset.productId = item.id;
+            removeButton.setAttribute('aria-label', `Remove ${item.name} from cart`);
+            removeButton.textContent = 'Remove';
+            removeButton.addEventListener('click', (e) => removeFromCart(e.target.dataset.productId));
+
+            cartItem.append(itemName, quantityControl, itemTotal, removeButton);
+            cartItemsContainer.appendChild(cartItem);
         });
     }
 
@@ -232,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         saveCart();
-        showToast(`${product.name} added to cart!`);
+        showToast(`${product.name} added to cart!`, false, true);
         
         // HCI: Immediate feedback on the button
         if (buttonElement) {
@@ -349,13 +363,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function showToast(message, showUndo = false) {
+    function showToast(message, showUndo = false, isCartUpdate = false) {
         const toast = document.createElement('div');
         toast.classList.add('toast');
         
         const messageSpan = document.createElement('span');
         messageSpan.textContent = message;
         toast.appendChild(messageSpan);
+
+        if (isCartUpdate) {
+            const viewCartLink = document.createElement('a');
+            viewCartLink.href = 'cart.html';
+            viewCartLink.className = 'toast-link';
+            viewCartLink.textContent = 'View Cart';
+            toast.appendChild(viewCartLink);
+        }
 
         if (showUndo) {
             const undoButton = document.createElement('button');

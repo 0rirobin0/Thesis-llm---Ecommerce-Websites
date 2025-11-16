@@ -335,7 +335,7 @@ label {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    transition: var(--transition-base);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: var(--box-shadow-sm);
 }
 
@@ -500,10 +500,9 @@ label {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(100%);
     transition: all 0.3s ease-in-out;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: var(--space-2);
 }
@@ -514,16 +513,65 @@ label {
 }
 
 .toast .undo-button {
-    background: none;
+    background: var(--color-secondary);
+    color: var(--color-light);
     border: none;
-    color: var(--color-primary);
+    padding: var(--space-1);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.toast .toast-link {
+    color: var(--color-light);
+    text-decoration: underline;
     font-weight: var(--font-weight-bold);
-    padding: 0;
-    margin-left: var(--space-2);
+}
+
+/* === FOOTER === */
+.site-footer {
+    background-color: var(--color-dark);
+    color: var(--color-light);
+    padding: var(--space-4) 0;
+    font-size: var(--font-size-sm);
+}
+
+.site-footer a {
+    color: var(--color-light);
+    text-decoration: none;
+}
+
+.site-footer a:hover {
     text-decoration: underline;
 }
-.toast .undo-button:hover {
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+}
+
+.footer-column h4 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--space-2);
     color: var(--color-background);
-    transform: none;
-    box-shadow: none;
+}
+
+.footer-column ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-column li {
+    margin-bottom: var(--space-1);
+}
+
+.footer-bottom {
+    border-top: var(--border-width) solid var(--color-secondary);
+    padding-top: var(--space-2);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    color: var(--color-secondary);
 }
