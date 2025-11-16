@@ -1,0 +1,17 @@
+{
+  "name": "ecommerce-optimization",
+  "version": "1.0.0",
+  "description": "Scripts to optimize assets for the e-commerce site.",
+  "main": "optimize.js",
+  "scripts": {
+    "optimize": "node optimize.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "csso-cli": "^4.0.2",
+    "sharp": "^0.33.4",
+    "terser": "^5.31.3"
+  }
+}

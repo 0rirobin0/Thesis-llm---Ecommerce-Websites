@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - ShopSphere</title>
+    <meta name="description" content="Complete your purchase securely at ShopSphere.">
+    <meta name="robots" content="noindex, nofollow"> <!-- Discourage search engines from indexing checkout pages -->
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.yourdomain.com/checkout.html">
+    <meta property="og:title" content="Checkout - ShopSphere">
+    <meta property="og:description" content="Complete your purchase securely at ShopSphere.">
+    <meta property="og:image" content="https://www.yourdomain.com/images/og-checkout.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.yourdomain.com/checkout.html">
+    <meta property="twitter:title" content="Checkout - ShopSphere">
+    <meta property="twitter:description" content="Complete your purchase securely at ShopSphere.">
+    <meta property="twitter:image" content="https://www.yourdomain.com/images/og-checkout.jpg">
+
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="toast-container"></div>
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Shop</a>
+            <ul>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="cart.html">Cart <span class="cart-count">0</span></a></li>
+                <li><a href="checkout.html" aria-current="page">Checkout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main id="main-content">
+        <h1>Checkout</h1>
+        <div id="order-summary">
+            <!-- Order summary will be injected here by JavaScript -->
+        </div>
+        <form id="checkout-form" novalidate>
+            <h2>Contact Information</h2>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required autocomplete="name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" id="phone" name="phone" required autocomplete="tel">
+            </div>
+            <h2>Shipping Address</h2>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" required autocomplete="street-address">
+            </div>
+            <button type="submit" class="btn">Place Order</button>
+        </form>
+    </main>
+    <footer>
+        <p>&copy; 2025 E-commerce Website</p>
+    </footer>
+    <script src="scripts/products.js" defer></script>
+    <script src="scripts/app.js" defer></script>
+</body>
+</html>

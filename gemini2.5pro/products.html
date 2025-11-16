@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Products - ShopSphere</title>
+    <meta name="description" content="Browse our collection of high-quality products. From electronics to fashion, find everything you need at ShopSphere.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.yourdomain.com/products.html">
+    <meta property="og:title" content="Our Products - ShopSphere">
+    <meta property="og:description" content="Browse our collection of high-quality products. From electronics to fashion, find everything you need at ShopSphere.">
+    <meta property="og:image" content="https://www.yourdomain.com/images/og-products.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.yourdomain.com/products.html">
+    <meta property="twitter:title" content="Our Products - ShopSphere">
+    <meta property="twitter:description" content="Browse our collection of high-quality products. From electronics to fashion, find everything you need at ShopSphere.">
+    <meta property="twitter:image" content="https://www.yourdomain.com/images/og-products.jpg">
+
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div id="toast-container"></div>
+    <header>
+        <nav class="container">
+            <a href="index.html" class="logo">ShopSphere</a>
+            <ul>
+                <li><a href="products.html" aria-current="page">Products</a></li>
+                <li><a href="cart.html">Cart <span class="cart-count">0</span></a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main id="main-content" class="container">
+        <h1>Products</h1>
+        <div class="filters">
+            <div class="form-group">
+                <label for="search">Search products</label>
+                <input type="text" id="search" class="form-control" placeholder="e.g. Running Shoes">
+            </div>
+            <div class="form-group">
+                <label for="category">Filter by category</label>
+                <select id="category" class="form-control">
+                    <option value="all">All categories</option>
+                    <option value="shoes">Shoes</option>
+                    <option value="apparel">Apparel</option>
+                    <option value="electronics">Electronics</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sort">Sort by</label>
+                <select id="sort" class="form-control">
+                    <option value="default">Default</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+        <div id="product-list" class="product-grid" aria-live="polite">
+            <!-- Products will be injected here by JavaScript -->
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 E-commerce Website</p>
+    </footer>
+    <script src="scripts/products.js" defer></script>
+    <script src="scripts/app.js" defer></script>
+</body>
+</html>
