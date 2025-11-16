@@ -457,13 +457,15 @@ const createProductCard = (product) => {
     const imageDiv = document.createElement('div');
     imageDiv.className = 'product-image';
     
-    // Create image
+    // Create image with optimization
     const img = document.createElement('img');
     img.src = product.image;
     if (product.srcset) img.srcset = product.srcset;
     if (product.sizes) img.sizes = product.sizes;
     img.alt = product.imageAlt;
     img.loading = 'lazy';
+    img.decoding = 'async';
+    img.fetchPriority = 'low';
     img.width = 300;
     img.height = 300;
     
