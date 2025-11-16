@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your Cart • Acme Shop</title>
+    <meta name="description" content="View and manage the items in your shopping cart." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.pexels.com" crossorigin>
+    <link rel="preconnect" href="https://picsum.photos">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="canonical" href="https://example.com/cart.html" />
+    <meta property="og:title" content="Your Cart • Acme Shop" />
+    <meta property="og:description" content="View and manage the items in your shopping cart." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/cart.html" />
+    <meta property="og:image" content="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Your Cart • Acme Shop" />
+    <meta name="twitter:description" content="View and manage the items in your shopping cart." />
+    <meta name="twitter:image" content="https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop" />
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" role="banner">
+      <div class="container header-inner">
+        <a class="logo" href="./index.html" aria-label="Acme Shop Home">Acme<span>Shop</span></a>
+        <form class="search" role="search" aria-label="Products Search" action="./products.html">
+          <label class="sr-only" for="q">Search products</label>
+          <input id="q" name="search" type="search" placeholder="Search products..." autocomplete="off" />
+          <button class="btn" type="submit" aria-label="Search">Search</button>
+        </form>
+        <nav aria-label="Primary" class="nav">
+          <a href="./products.html">Products</a>
+          <a class="cart-link active" aria-current="page" href="./cart.html" aria-label="Cart">
+            Cart <span class="cart-count" aria-live="polite" aria-atomic="true">0</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="section">
+      <div class="container section-header">
+        <h1>Your cart</h1>
+        <p>Review items and update quantities</p>
+      </div>
+
+      <div class="container cart-layout">
+        <section class="cart-items" aria-label="Cart items">
+          <div id="cart-items" aria-live="polite"></div>
+        </section>
+        <aside class="cart-summary" aria-label="Cart summary">
+          <div class="card">
+            <h2>Summary</h2>
+            <dl class="summary">
+              <div class="row">
+                <dt>Subtotal</dt>
+                <dd id="subtotal">$0.00</dd>
+              </div>
+              <div class="row">
+                <dt>Estimated Tax</dt>
+                <dd id="tax">$0.00</dd>
+              </div>
+              <div class="row total">
+                <dt>Total</dt>
+                <dd id="total">$0.00</dd>
+              </div>
+            </dl>
+            <a class="btn btn-primary w-full" href="./checkout.html" id="checkout-btn">Proceed to checkout</a>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Acme Shop.</p>
+        <nav aria-label="Footer">
+          <a href="./products.html">Continue shopping</a>
+        </nav>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="./scripts/products.js" defer></script>
+    <script src="./scripts/app.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        document.getElementById('year').textContent = new Date().getFullYear();
+        window.initCart && window.initCart();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Acme Shop • Modern, Minimal eCommerce</title>
+    <meta name="description" content="A modern, minimal eCommerce storefront built with HTML, CSS, and vanilla JavaScript." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.pexels.com" crossorigin>
+    <link rel="preconnect" href="https://picsum.photos">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="canonical" href="https://example.com/index.html" />
+    <meta property="og:title" content="Acme Shop • Modern, Minimal eCommerce" />
+    <meta property="og:description" content="A modern, minimal eCommerce storefront built with HTML, CSS, and vanilla JavaScript." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/index.html" />
+    <meta property="og:image" content="https://images.pexels.com/photos/3825572/pexels-photo-3825572.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Acme Shop • Modern, Minimal eCommerce" />
+    <meta name="twitter:description" content="A modern, minimal eCommerce storefront built with HTML, CSS, and vanilla JavaScript." />
+    <meta name="twitter:image" content="https://images.pexels.com/photos/3825572/pexels-photo-3825572.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop" />
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" role="banner">
+      <div class="container header-inner">
+        <a class="logo" href="./index.html" aria-label="Acme Shop Home">Acme<span>Shop</span></a>
+        <form class="search" role="search" aria-label="Sitewide" action="./products.html">
+          <label class="sr-only" for="q">Search products</label>
+          <input id="q" name="search" type="search" placeholder="Search products..." autocomplete="off" />
+          <button class="btn" type="submit" aria-label="Search">Search</button>
+        </form>
+        <nav aria-label="Primary" class="nav">
+          <a href="./products.html">Products</a>
+          <a class="cart-link" href="./cart.html" aria-label="Cart">
+            Cart <span class="cart-count" aria-live="polite" aria-atomic="true">0</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="container">
+          <h1>Everything you need, thoughtfully curated.</h1>
+          <p>Minimal, accessible storefront. No tracking. Just great products.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="./products.html">Shop Products</a>
+            <a class="btn" href="#featured">See Featured</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="featured" class="section">
+        <div class="container section-header">
+          <h2>Featured products</h2>
+          <p>Hand‑picked best sellers</p>
+        </div>
+        <div class="container">
+          <div id="featured-grid" class="product-grid" aria-live="polite"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Acme Shop. Built with HTML, CSS, JS.</p>
+        <nav aria-label="Footer">
+          <a href="./products.html">All Products</a>
+          <a href="./cart.html">Cart</a>
+          <a href="./checkout.html">Checkout</a>
+        </nav>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="./scripts/products.js" defer></script>
+    <script src="./scripts/app.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        document.getElementById('year').textContent = new Date().getFullYear();
+        window.initHome && window.initHome();
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Checkout • Acme Shop</title>
+    <meta name="description" content="Secure checkout form and order summary." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://images.pexels.com" crossorigin>
+    <link rel="preconnect" href="https://picsum.photos">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="canonical" href="https://example.com/checkout.html" />
+    <meta property="og:title" content="Checkout • Acme Shop" />
+    <meta property="og:description" content="Secure checkout form and order summary." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/checkout.html" />
+    <meta property="og:image" content="https://images.pexels.com/photos/3825572/pexels-photo-3825572.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Checkout • Acme Shop" />
+    <meta name="twitter:description" content="Secure checkout form and order summary." />
+    <meta name="twitter:image" content="https://images.pexels.com/photos/3825572/pexels-photo-3825572.jpeg?auto=compress&cs=tinysrgb&w=1200&h=630&fit=crop" />
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header" role="banner">
+      <div class="container header-inner">
+        <a class="logo" href="./index.html" aria-label="Acme Shop Home">Acme<span>Shop</span></a>
+        <form class="search" role="search" aria-label="Products Search" action="./products.html">
+          <label class="sr-only" for="q">Search products</label>
+          <input id="q" name="search" type="search" placeholder="Search products..." autocomplete="off" />
+          <button class="btn" type="submit" aria-label="Search">Search</button>
+        </form>
+        <nav aria-label="Primary" class="nav">
+          <a href="./products.html">Products</a>
+          <a class="cart-link" href="./cart.html" aria-label="Cart">
+            Cart <span class="cart-count" aria-live="polite" aria-atomic="true">0</span>
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="section">
+      <div class="container section-header">
+        <h1>Checkout</h1>
+        <p>Enter your details to place the order</p>
+      </div>
+
+      <div class="container checkout-layout">
+        <section aria-label="Customer details" class="checkout-form card">
+          <form id="checkout-form" novalidate>
+            <div class="field">
+              <label for="name">Full name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required aria-describedby="err-name" />
+              <small class="error" id="err-name" role="alert" aria-live="polite"></small>
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required aria-describedby="err-email" />
+              <small class="error" id="err-email" role="alert" aria-live="polite"></small>
+            </div>
+            <div class="field">
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="err-phone" />
+              <small class="error" id="err-phone" role="alert" aria-live="polite"></small>
+            </div>
+            <fieldset class="field">
+              <legend>Shipping address</legend>
+              <label for="address">Street address</label>
+              <input id="address" name="address" type="text" autocomplete="address-line1" required aria-describedby="err-address" />
+              <small class="error" id="err-address" role="alert" aria-live="polite"></small>
+              <div class="grid-2">
+                <div>
+                  <label for="city">City</label>
+                  <input id="city" name="city" type="text" autocomplete="address-level2" required aria-describedby="err-city" />
+                  <small class="error" id="err-city" role="alert" aria-live="polite"></small>
+                </div>
+                <div>
+                  <label for="state">State</label>
+                  <input id="state" name="state" type="text" autocomplete="address-level1" required aria-describedby="err-state" />
+                  <small class="error" id="err-state" role="alert" aria-live="polite"></small>
+                </div>
+              </div>
+              <div class="grid-2">
+                <div>
+                  <label for="zip">ZIP</label>
+                  <input id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" required aria-describedby="err-zip" />
+                  <small class="error" id="err-zip" role="alert" aria-live="polite"></small>
+                </div>
+                <div>
+                  <label for="country">Country</label>
+                  <input id="country" name="country" type="text" autocomplete="country-name" required aria-describedby="err-country" />
+                  <small class="error" id="err-country" role="alert" aria-live="polite"></small>
+                </div>
+              </div>
+            </fieldset>
+            <button class="btn btn-primary w-full" type="submit">Place order</button>
+          </form>
+          <p class="note">No payment collected. Demo checkout saves order to your browser only.</p>
+        </section>
+
+        <aside aria-label="Order summary" class="card order-summary">
+          <h2>Order summary</h2>
+          <div id="summary-items"></div>
+          <dl class="summary">
+            <div class="row">
+              <dt>Subtotal</dt>
+              <dd id="subtotal">$0.00</dd>
+            </div>
+            <div class="row">
+              <dt>Estimated Tax</dt>
+              <dd id="tax">$0.00</dd>
+            </div>
+            <div class="row total">
+              <dt>Total</dt>
+              <dd id="total">$0.00</dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer" role="contentinfo">
+      <div class="container footer-inner">
+        <p>© <span id="year"></span> Acme Shop.</p>
+        <nav aria-label="Footer">
+          <a href="./cart.html">Back to cart</a>
+        </nav>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="./scripts/products.js" defer></script>
+    <script src="./scripts/app.js" defer></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function(){
+        document.getElementById('year').textContent = new Date().getFullYear();
+        window.initCheckout && window.initCheckout();
+      });
+    </script>
+  </body>
+</html>
